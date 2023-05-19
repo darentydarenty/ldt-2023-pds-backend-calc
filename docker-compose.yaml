@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+  api:
+    build:
+      context: .
+      dockerfile: docker/api/Dockerfile
+
+    restart: always
+    container_name: pds-backend-api
+    env_file:
+      - .env
+
+    ports:
+      - ${API_SERVER_PORT}:5000
+
+    depends_on:
+      - psql_db
+
+    command: [
+      "poetry", "run", "uvicorn", "main:app",
+      "--host", "0.0.0.0",
+      "--port", '5000',
+    ]
+
+  psql_db:
+    image: postgres:latest
+    env_file:
+      - ./.env
+    volumes:
+      - ./migrations/pds-backend-api.sql:/docker-entrypoint-initdb.d/pds-backend-api.sql
+      - ./database/pds-backend-api:/var/lib/postgresql/data
+    container_name: pds_backend_db
+    ports:
+      - "5400:5432"
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_DB=${POSTGRES_DATABASE_NAME}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}

@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "ldt-2023-ds-back"
+version = "0.1.0"
+description = ""
+authors = ["SiropTime <sirop4beats@gmail.com>"]
+readme = "README.md"
+packages = [{include = "ldt_2023_ds_back"}]
+
+[tool.poetry.dependencies]
+python = "^3.11"
+pydantic = "^1.10.7"
+fastapi = "^0.95.2"
+aiopg = "^1.4.0"
+httpx = "^0.24.0"
+python-logging-loki = "^0.3.1"
+uvicorn = {extras = ["standard"], version = "^0.22.0"}
+cryptography = "^40.0.2"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
