@@ -1,14 +1,35 @@
-
+import datetime
 import logging
 
 __all__ = ["App"]
 
 import fastapi
+from fastapi import APIRouter
 
 from app import config
 from app.pkg import connectors
 from app.pkg.logger import Logger
 from app.pkg.encrypt import fernet
+
+from pydantic import BaseModel
+
+
+class HealthCheckModel(BaseModel):
+    status: str = "OK"
+    request_duration: float | None
+
+
+router = APIRouter(prefix="/base", tags=["Basic"])
+
+
+@router.get("/health")
+async def health_check():
+    start = datetime.datetime.now()
+    response = HealthCheckModel()
+    end = datetime.datetime.now()
+    response.request_duration = end.microsecond - start.microsecond
+
+    return response
 
 
 class App:
@@ -58,5 +79,9 @@ class App:
             self.__settings.FERNET_KEY.get_secret_value()
         )
 
+        self.__app.include_router(router)
+
     def get_app(self) -> fastapi.FastAPI:
         return self.__app
+
+

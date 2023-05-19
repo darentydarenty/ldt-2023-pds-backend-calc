@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile
 
-    restart: always
+    restart: unless-stopped
     container_name: pds-backend-api
     env_file:
       - .env
@@ -15,11 +15,30 @@ services:
 
     depends_on:
       - psql_db
+      - migrations
 
     command: [
       "poetry", "run", "uvicorn", "main:app",
       "--host", "0.0.0.0",
       "--port", '5000',
+    ]
+
+  migrations:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    restart: unless-stopped
+    container_name: pds-backend-migrations-temp
+    env_file:
+      - .env
+
+    depends_on:
+      - psql_db
+
+    command: [
+    "poetry", "run", "yoyo", "apply",
+    "--database",
     ]
 
   psql_db:
