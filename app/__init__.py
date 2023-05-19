@@ -8,12 +8,14 @@ import fastapi
 from app import config
 from app.pkg import connectors
 from app.pkg.logger import Logger
+from app.pkg.encrypt import fernet
 
 
 class App:
     __settings: config.Settings
+    __fernet_encryptor: fernet.FernetEncryptor
 
-    _logger: logging.Logger
+    _logger: Logger
     _postgresql: connectors.Postgresql
     _http_client: connectors.HttpClient
 
@@ -42,12 +44,18 @@ class App:
             timeout=float(self.__settings.HTTP_CLIENT_TIMEOUT),
         )
 
+        self._logger.log(f"init app with docs_url: {self.__settings.DOCS_URL}", logging.INFO)
+
         self.__app = fastapi.FastAPI(
             title=self.__settings.SERVICE_NAME,
             description="put your description here",
             version="0.1.0",
-            openapi_url=self.__settings.OPENAPI_URL,
             docs_url=self.__settings.DOCS_URL,
+            openapi_url=self.__settings.OPENAPI_URL,
+        )
+
+        self.__fernet_encryptor = fernet.FernetEncryptor(
+            self.__settings.FERNET_KEY.get_secret_value()
         )
 
     def get_app(self) -> fastapi.FastAPI:

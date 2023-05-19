@@ -4,7 +4,6 @@ version = "0.1.0"
 description = ""
 authors = ["SiropTime <sirop4beats@gmail.com>"]
 readme = "README.md"
-packages = [{include = "ldt_2023_ds_back"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"

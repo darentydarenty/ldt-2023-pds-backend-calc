@@ -13,7 +13,7 @@ MAIN_LOGGER = "main"
 # Logger that prints to stdout and sends logs in loki
 class Logger:
 
-    LOG_LEVEL: str
+    LOG_LEVEL=logging.INFO
 
     __logger_path: str
     __log_format: str = (
@@ -62,22 +62,9 @@ class Logger:
 
         return stream_handler
 
-    def get_file_handler(self, file_name: str):
-        Path(file_name).absolute().parent.mkdir(exist_ok=True, parents=True)
-        file_handler = RotatingFileHandler(
-            filename=file_name,
-            maxBytes=5242880,
-            backupCount=10,
-        )
-        file_handler.setFormatter(self.__formatter)
-
-        return file_handler
-
     def _get_logger(self) -> logging.Logger:
         logger = logging.getLogger(MAIN_LOGGER)
-        file_path = str(Path().absolute())
 
-        logger.addHandler(self.get_file_handler(file_name=file_path))
         logger.addHandler(self.get_stream_handler())
         logger.addHandler(self.__loki_handler)
 

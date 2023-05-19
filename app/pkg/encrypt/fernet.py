@@ -10,10 +10,6 @@ class FernetEncryptor(BaseEncryptor):
     __key: Fernet
 
     def __init__(self, key: str):
-        try:
-            key = base64.decodestring(key)
-        except Exception as e:
-            raise InvalidFernetKey(e)
         self.__key = Fernet(key=key)
 
     def encrypt(self, text: str) -> str:

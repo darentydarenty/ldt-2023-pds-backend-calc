@@ -3,7 +3,7 @@ services:
   api:
     build:
       context: .
-      dockerfile: docker/api/Dockerfile
+      dockerfile: Dockerfile
 
     restart: always
     container_name: pds-backend-api
@@ -31,7 +31,7 @@ services:
       - ./database/pds-backend-api:/var/lib/postgresql/data
     container_name: pds_backend_db
     ports:
-      - "5400:5432"
+      - ${POSTGRES_PORT}:5432
     environment:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_DB=${POSTGRES_DATABASE_NAME}

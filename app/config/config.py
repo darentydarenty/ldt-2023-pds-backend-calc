@@ -26,8 +26,8 @@ class Settings(BaseModel):
 
     HTTP_CLIENT_TIMEOUT: PositiveInt
 
-    OPENAPI_URL: StrictStr
-    DOCS_URL: StrictStr
+    OPENAPI_URL: str
+    DOCS_URL: str
 
     class Config:
         """Configuration of settings."""
