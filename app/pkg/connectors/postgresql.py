@@ -1,5 +1,6 @@
 """Postgresql connector."""
-
+import asyncio
+import functools
 from contextlib import asynccontextmanager
 
 import aiopg
@@ -18,12 +19,12 @@ class NoResultsException(Exception):
 
 class Postgresql(BaseConnector):
     def __init__(
-        self,
-        username: str,
-        password: pydantic.SecretStr,
-        host: str,
-        port: pydantic.PositiveInt,
-        database_name: str,
+            self,
+            username: str,
+            password: pydantic.SecretStr,
+            host: str,
+            port: pydantic.PositiveInt,
+            database_name: str,
     ):
         """Settings for create postgresql dsn.
 
@@ -73,3 +74,6 @@ async def get_connection(
     async with postgresql.get_connect() as connection:
         async with (await connection.cursor(cursor_factory=RealDictCursor)) as cur:
             yield cur
+
+
+

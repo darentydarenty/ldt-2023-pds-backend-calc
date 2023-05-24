@@ -15,6 +15,7 @@ python-logging-loki = "^0.3.1"
 uvicorn = {extras = ["standard"], version = "^0.22.0"}
 cryptography = "^40.0.2"
 yoyo-migrations = "^8.2.0"
+asgiref = "^3.7.1"
 
 
 [build-system]

@@ -66,7 +66,7 @@ class Logger:
         logger = logging.getLogger(MAIN_LOGGER)
 
         logger.addHandler(self.get_stream_handler())
-        logger.addHandler(self.__loki_handler)
+        # logger.addHandler(self.__loki_handler)
 
         logger.setLevel(self.LOG_LEVEL)
         self._logger = logger

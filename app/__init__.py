@@ -1,3 +1,4 @@
+import asyncio
 import datetime
 import logging
 
@@ -10,6 +11,8 @@ from app import config
 from app.pkg import connectors
 from app.pkg.logger import Logger
 from app.pkg.encrypt import fernet
+
+from app.internal.constant import ConstantRepository, ConstantUseCase
 
 from pydantic import BaseModel
 
@@ -39,6 +42,9 @@ class App:
     _logger: Logger
     _postgresql: connectors.Postgresql
     _http_client: connectors.HttpClient
+
+    _constant_repo: ConstantRepository
+    _constant_uc: ConstantUseCase
 
     __app: fastapi.FastAPI
 
@@ -78,6 +84,14 @@ class App:
         self.__fernet_encryptor = fernet.FernetEncryptor(
             self.__settings.FERNET_KEY.get_secret_value()
         )
+
+        self._constant_repo = ConstantRepository(
+            postgresql=self._postgresql
+        )
+        self._constant_uc = ConstantUseCase(
+            const_repo=self._constant_repo
+        )
+        self._constant_uc.load()
 
         self.__app.include_router(router)
 
