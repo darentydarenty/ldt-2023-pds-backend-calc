@@ -91,7 +91,7 @@ class App:
         self._constant_uc = ConstantUseCase(
             const_repo=self._constant_repo
         )
-        self._constant_uc.load()
+        await self._constant_uc.load()
         print(self._constant_uc.get_data())
 
         self.__app.include_router(router)
