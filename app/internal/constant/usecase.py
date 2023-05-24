@@ -15,7 +15,6 @@ class ConstantUseCase:
     def __init__(self, const_repo: ConstantRepository):
         self.__const_repo = const_repo
 
-    @async_to_sync
     async def load(self):
 
         result = await self.__const_repo.get_data()
