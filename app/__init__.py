@@ -12,7 +12,8 @@ from app.pkg import connectors
 from app.pkg.logger import Logger
 from app.pkg.encrypt import fernet
 
-from app.internal.constant import ConstantRepository, ConstantUseCase
+from app.internal.constant import ConstantRepository, ConstantUseCase, ConstantHandler
+from app.internal.constant import router as const_router
 
 from pydantic import BaseModel
 
@@ -93,8 +94,9 @@ class App:
         )
         asyncio.create_task(self._constant_uc.load())
         print(self._constant_uc.get_data())
-
+        self._constant_handler = ConstantHandler(const_uc=self._constant_uc)
         self.__app.include_router(router)
+        self.__app.include_router(const_router)
 
     def get_app(self) -> fastapi.FastAPI:
         return self.__app
