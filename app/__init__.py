@@ -91,8 +91,7 @@ class App:
         self._constant_uc = ConstantUseCase(
             const_repo=self._constant_repo
         )
-        loop = asyncio.get_running_loop()
-        loop.run_until_complete(self._constant_uc.load())
+        asyncio.create_task(self._constant_uc.load())
         print(self._constant_uc.get_data())
 
         self.__app.include_router(router)
