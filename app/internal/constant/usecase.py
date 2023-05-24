@@ -8,12 +8,13 @@ from .models import *
 
 
 class ConstantUseCase:
-    _data: ModelData
+    _data: ModelData | None
 
     __const_repo: ConstantRepository
 
     def __init__(self, const_repo: ConstantRepository):
         self.__const_repo = const_repo
+        self._data = None
 
     async def load(self):
 
