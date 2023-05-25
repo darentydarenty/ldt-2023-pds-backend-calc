@@ -9,47 +9,47 @@ class ReportData(BaseModel):
 
 
 class CompanyData(BaseModel):
-  # company_short
-  project_name: str
-  organization_type: str
-  workers_quantity: int
-  industry: int
-  county: int
+    # company_short
+    project_name: str
+    organization_type: str
+    workers_quantity: int
+    industry: int
+    county: int
 
-  # company_full
-  land_area: int
-  building_area: int
-  machine_names: list
-  machine_quantities: list
-  patent_type: int
-  bookkeeping: int
-  tax_system: str
-  operations: int
-  other_needs: list
+    # company_full
+    land_area: int
+    building_area: int
+    machine_names: list
+    machine_quantities: list
+    patent_type: int
+    bookkeeping: int
+    tax_system: str
+    operations: int
+    other_needs: list
 
 class CompanyPredict(BaseModel):
-  # result
-  total_expenses: int
-  # staff
-  staff_expenses: int
-  salaries_expenses: int
-  pension_expenses: int
-  medical_expenses: int
-  # estate
-  estate_expenses: int
-  land_expenses: int
-  building_expenses: int
-  # taxes
-  tax_expenses: int
-  land_tax: int
-  estate_tax: int
-  income_tax: int
-  # services
-  service_expenses: int
-  duty_expenses: int
-  bookkeeping_expenses: int
-  patent_expenses: int
-  machine_expenses: int
+    # result
+    total_expenses: int
+    # staff
+    staff_expenses: int
+    salaries_expenses: int
+    pension_expenses: int
+    medical_expenses: int
+    # estate
+    estate_expenses: int
+    land_expenses: int
+    building_expenses: int
+    # taxes
+    tax_expenses: int
+    land_tax: int
+    estate_tax: int
+    income_tax: int
+    # services
+    service_expenses: int
+    duty_expenses: int
+    bookkeeping_expenses: int
+    patent_expenses: int
+    machine_expenses: int
 
 class MachinePricesDAO(BaseModel):
     machine_id:    int
