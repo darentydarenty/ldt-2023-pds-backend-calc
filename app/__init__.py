@@ -7,6 +7,7 @@ __all__ = ["App"]
 import time
 
 import fastapi
+from asgiref.sync import async_to_sync
 from fastapi import APIRouter
 
 from app import config
@@ -55,6 +56,7 @@ class App:
         print("really did this shit")
 
     @classmethod
+    @async_to_sync
     async def build(cls):
         self = cls()
         self.__settings = config.parse_settings()
