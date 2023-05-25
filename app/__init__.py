@@ -114,8 +114,6 @@ class App:
         self.__app.include_router(self._constant_handler.router)
         self.__app.include_router(self._calc_handler.router)
 
-        return await self.a_get_app()
-
     def get_app(self) -> fastapi.FastAPI:
         return self.__app
 
