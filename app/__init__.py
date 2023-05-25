@@ -93,7 +93,7 @@ class App:
             const_repo=self._constant_repo
         )
         task = asyncio.create_task(self._constant_uc.load())
-        task.result()
+        task.done()
         self._constant_handler = ConstantHandler(const_uc=self._constant_uc)
 
         self._calc_repo = CalculationsRepository(postgresql=self._postgresql)
