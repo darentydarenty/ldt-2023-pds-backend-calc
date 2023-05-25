@@ -15,6 +15,7 @@ class CalculationsHandler:
         self.router.add_route("/", self.get_report_by_tracker_id)
 
     async def get_report_by_tracker_id(self) -> ReportResult:
+        self._calc_uc.calculate()
         return ReportResult.construct()
 
 
