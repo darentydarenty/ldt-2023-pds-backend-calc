@@ -5,7 +5,4 @@ from fastapi import FastAPI
 
 import app as a
 
-
-
-app = a.App.build()
-
+app = asyncio.create_task(a.App.build()).current_task().result()

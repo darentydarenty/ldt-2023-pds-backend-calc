@@ -56,7 +56,6 @@ class App:
         print("really did this shit")
 
     @classmethod
-    @async_to_sync
     async def build(cls):
         self = cls()
         self.__settings = config.parse_settings()
