@@ -1,6 +1,8 @@
 import asyncio
 
-import app
+import app as a
 
-app = await app.App.build()
+
+async def app():
+    return await a.App.build()
 
