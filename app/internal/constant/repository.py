@@ -12,7 +12,6 @@ class ConstantRepository:
     def __init__(self, postgresql: Postgresql):
         self.__db = postgresql
 
-    @async_to_sync
     async def get_data(self) -> list:
         queries = {
             """

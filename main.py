@@ -2,4 +2,5 @@ import asyncio
 
 import app as a
 
-app = a.App().get_app()
+a.App().build()
+app = a.fastapi_app
