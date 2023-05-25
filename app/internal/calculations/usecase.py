@@ -14,7 +14,7 @@ class CalculationsUseCase:
         self._exp_model = ExpensesModel(model_data)
 
     def calculate(self):
-        self._exp_model.predict()
+        pass
 
     async def get_report_by_tracker_id(self, tracker_id: str):
         return self._calc_repo.get_report_by_tracker_id(tracker_id)

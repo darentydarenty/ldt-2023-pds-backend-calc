@@ -97,9 +97,10 @@ class App:
         self._constant_handler = ConstantHandler(const_uc=self._constant_uc)
 
         self._calc_repo = CalculationsRepository(postgresql=self._postgresql)
+        md = self._constant_uc.get_data()
         self._calc_uc = CalculationsUseCase(
             calc_repo=self._calc_repo,
-            model_data=self._constant_uc.get_data(),
+            model_data=md,
         )
         self._calc_handler = CalculationsHandler(calc_uc=self._calc_uc)
 
