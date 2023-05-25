@@ -98,6 +98,7 @@ class App:
 
         self._calc_repo = CalculationsRepository(postgresql=self._postgresql)
         md = self._constant_uc.get_data()
+        print(md)
         self._calc_uc = CalculationsUseCase(
             calc_repo=self._calc_repo,
             model_data=md,
