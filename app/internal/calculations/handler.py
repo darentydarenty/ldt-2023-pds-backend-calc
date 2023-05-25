@@ -18,6 +18,6 @@ class CalculationsHandler:
     async def get_report_by_tracker_id(self, tracker_id: str):
         result = await self._calc_uc.get_report_by_tracker_id(tracker_id)
         print(result)
-        return
+        return result
 
 

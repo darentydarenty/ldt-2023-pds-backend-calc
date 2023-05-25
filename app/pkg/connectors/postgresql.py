@@ -36,7 +36,7 @@ class Postgresql(BaseConnector):
             port: the port of database server.
             database_name: database name.
         """
-        self.pool = None
+        self.pool = aiopg.create_pool(dsn=self.get_dsn())
         self.username = username
         self.password = password
         self.host = host
