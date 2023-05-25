@@ -66,7 +66,7 @@ class CalculationsRepository:
                 data = await cur.fetchone()
                 print(data)
 
-                result += ReportDAO(**data)
+                result.append(res_model(**data))
 
             return result
 
