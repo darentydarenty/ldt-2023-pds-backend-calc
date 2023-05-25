@@ -144,20 +144,18 @@ class ReportDAO(BaseModel):
     # company full
     land_area: int | None
     building_area: int | None
-    machine_names: list[int] | list[str] | None
+    machine_names: list[str] | None
     machine_quantities: list[int] | None
-    patent_type: int | str | None
+    patent_type: str | None
     bookkeeping: bool | None
     tax_system: str | None
     operations: int | None
-    other_needs: list[int] | list[str] | None
+    other_needs: list[str] | None
 
     # company short
     project_name: str | None
-    industry: int | str | None
+    industry: str | None
     organization_type: str | None
     workers_quantity: int
-    county: int | str | None
+    county: str | None
 
-    class Config:
-        orm_mode = True
