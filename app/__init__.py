@@ -29,7 +29,7 @@ class HealthCheckModel(BaseModel):
 router = APIRouter(prefix="/base", tags=["Basic"])
 
 
-fastapi_app: FastAPI
+fastapi_app: FastAPI | None = None
 
 
 @router.get("/health")
