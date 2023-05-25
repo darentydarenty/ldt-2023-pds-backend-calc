@@ -9,8 +9,8 @@ class CalculationsRepository:
     def __init__(self, postgresql: Postgresql):
         self.__db = postgresql
 
-    async def get_report_by_tracker_id(self, tracker_id: str) -> list[ReportDAO]:
-        queries = {"""
+    async def get_report_by_tracker_id(self, tracker_id: str) -> ReportDAO:
+        query ="""
                 SELECT
                     
                     res.tracker_id,
@@ -58,17 +58,14 @@ class CalculationsRepository:
                 
                 WHERE
                     res.tracker_id = $1;
-                """: ReportDAO}
-        result = []
+                """
         async with get_connection(self.__db) as cur:
-            for query, res_model in queries.items():
-                await cur.execute(query, tracker_id)
-                data = await cur.fetchone()
-                print(data)
 
-                result.append(res_model(**data))
+            await cur.execute(query, tracker_id)
+            data = await cur.fetchone()
+            print(data)
 
-            return result
+            return ReportDAO(**data)
 
     async def create_first_report(self):
         pass
