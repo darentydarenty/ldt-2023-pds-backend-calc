@@ -1,6 +1,8 @@
 import asyncio
 
-import app
+import nest_asyncio
 
-app = asyncio.get_running_loop().run_until_complete(app.App.build())
+import app
+nest_asyncio.apply()
+app = asyncio.get_event_loop().run_until_complete(app.App.build())
 
