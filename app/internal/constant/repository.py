@@ -13,6 +13,7 @@ class ConstantRepository:
         self.__db = postgresql
 
     async def get_data(self) -> list:
+        print("suka ebanaya")
         queries = {
             """
             SELECT * FROM constant.county_prices;
@@ -32,6 +33,7 @@ class ConstantRepository:
         }
         result = []
         async with get_connection(self.__db) as cur:
+            print("pidorstvo")
             for query, model in queries.items():
                 await cur.execute(query)
                 data = await cur.fetchall()
