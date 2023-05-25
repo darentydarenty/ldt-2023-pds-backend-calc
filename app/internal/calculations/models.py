@@ -10,22 +10,23 @@ class ReportData(BaseModel):
 
 class CompanyData(BaseModel):
     # company_short
-    project_name: str
-    organization_type: str
-    workers_quantity: int
-    industry: int
-    county: int
+    project_name:       str | None
+    organization_type:  str | None
+    workers_quantity:   int | None
+    industry:           int | None
+    county:             int | None
 
     # company_full
-    land_area: int
-    building_area: int
-    machine_names: list
-    machine_quantities: list
-    patent_type: int
-    bookkeeping: int
-    tax_system: str
-    operations: int
-    other_needs: list
+    land_area:          int | None
+    building_area:      int | None
+    machine_names:      list | None
+    machine_quantities: list | None
+    patent_type:        int | None
+    bookkeeping:        int | None
+    tax_system:         str | None
+    operations:         int | None
+    other_needs:        list | None
+
 
 class CompanyPredict(BaseModel):
     # result
@@ -51,42 +52,10 @@ class CompanyPredict(BaseModel):
     patent_expenses: int
     machine_expenses: int
 
-class MachinePricesDAO(BaseModel):
-    machine_id:    int
-    machine_name:  str
-    machine_price: int
 
-
-class MeanSalariesDAO(BaseModel):
-    industry_id:   int
-    industry_name: str
-    salary:        int
-
-
-class OtherNeedsDAO(BaseModel):
-    need_id:    int
-    need_name:  str
-    need_coeff: float
-
-
-class PatentPricesDAO(BaseModel):
-    patent_id:    int
-    patent_name:  str
-    patent_price: float
-
-
-class CountyPricesDAO(BaseModel):
-    county_id:    int
-    county_name:  str
-    county_price: float
-
-
-class ModelData(BaseModel):
-    machine_prices: list[MachinePricesDAO]
-    mean_salaries:  list[MeanSalariesDAO]
-    other_needs:    list[OtherNeedsDAO]
-    patent_prices:  list[PatentPricesDAO]
-    county_prices:  list[CountyPricesDAO]
+"""
+Categories to load in DB
+"""
 
 
 class ServiceCategory(BaseModel):
@@ -117,6 +86,11 @@ class StaffCategory(BaseModel):
     medical_expenses: int
 
 
+"""
+Data for report
+"""
+
+
 class OutputData(BaseModel):
     service: ServiceCategory
     estate: EstateCategory
@@ -135,4 +109,52 @@ class ReportResult(BaseModel):
     input: InputData
 
 
+class ReportDAO(BaseModel):
 
+    # base
+    tracker_id: str
+    total_expenses: int
+    date_create: str
+    report_name: str
+
+    # staff
+    salaries_expenses: int
+    staff_expanses: int
+    pension: int
+    medical_expenses: int
+
+    # taxes
+    estate_tax: int
+    land_tax: int
+    tax_expanses: int
+    income_tax: int
+
+    # services
+    service_expenses: int
+    duty_expenses: int
+    bookkeeping_expenses: int
+    patent_expenses: int
+    machine_expenses: int
+
+    # estate
+    estate_expenses: int
+    land_expenses: int
+    building_expenses: int
+
+    # company full
+    land_area: int | None
+    building_area: int | None
+    machine_names: list[int] | list[str] | None
+    machine_quantities: list[int] | None
+    patent_type: int | str | None
+    bookkeeping: bool | None
+    tax_system: str | None
+    operations: int | None
+    other_needs: list[int] | list[str] | None
+
+    # company short
+    project_name: str | None
+    industry: int | str | None
+    organization_type: str | None
+    workers_quantity: int
+    county: int | str | None

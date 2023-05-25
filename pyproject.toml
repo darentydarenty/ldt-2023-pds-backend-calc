@@ -17,6 +17,7 @@ cryptography = "^40.0.2"
 yoyo-migrations = "^8.2.0"
 asgiref = "^3.7.1"
 nest-asyncio = "^1.5.6"
+numpy = "^1.24.3"
 
 
 [build-system]

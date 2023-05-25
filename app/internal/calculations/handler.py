@@ -12,11 +12,11 @@ class CalculationsHandler:
         self._calc_uc = calc_uc
         self.router = fastapi.routing.APIRouter(prefix="/calc")
 
-        self.router.add_api_route(path="/", methods=["get"],
+        self.router.add_api_route(path="/info", methods=["get"],
                                   endpoint=self.get_report_by_tracker_id,
                                   response_model=ReportResult)
 
-    async def get_report_by_tracker_id(self):
-        return ReportResult.construct()
+    async def get_report_by_tracker_id(self, tracker_id: str):
+        return self._calc_uc.get_report_by_tracker_id(tracker_id)
 
 
