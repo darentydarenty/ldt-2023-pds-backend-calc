@@ -64,6 +64,8 @@ class CalculationsRepository:
             for query, res_model in queries.items():
                 await cur.execute(query, tracker_id)
                 data = await cur.fetchone()
+                print(data)
+
                 result += ReportDAO(**data)
 
             return result
