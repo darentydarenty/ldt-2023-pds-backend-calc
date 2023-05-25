@@ -158,3 +158,6 @@ class ReportDAO(BaseModel):
     organization_type: str | None
     workers_quantity: int
     county: int | str | None
+
+    class Config:
+        orm_mode = True
