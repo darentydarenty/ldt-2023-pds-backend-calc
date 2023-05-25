@@ -122,6 +122,7 @@ class App:
         self.__app.include_router(self._constant_handler.router)
         self.__app.include_router(self._calc_handler.router)
 
+        fastapi_app = self.__app
         return self.__app
 
     def get_app(self) -> fastapi.FastAPI:

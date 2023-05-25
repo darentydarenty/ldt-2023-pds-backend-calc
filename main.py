@@ -4,5 +4,5 @@ import app as a
 
 
 async def app():
-    return await a.App().build()
+    return await a.App.build()
 
