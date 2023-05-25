@@ -3,6 +3,5 @@ import asyncio
 import app as a
 
 
-async def app():
-    return await a.App.build()
+app = a.App().get_app()
 

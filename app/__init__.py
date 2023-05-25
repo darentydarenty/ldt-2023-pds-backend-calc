@@ -57,12 +57,6 @@ class App:
 
     def __init__(self):
         print("really did this shit")
-
-    @classmethod
-    async def build(cls):
-        global fastapi_app
-
-        self = cls()
         self.__settings = config.parse_settings()
 
         self._logger = Logger(
@@ -105,7 +99,7 @@ class App:
         self._constant_uc = ConstantUseCase(
             const_repo=self._constant_repo
         )
-        await self._constant_uc.load()
+        asyncio.new_event_loop().run_until_complete(self._constant_uc.load())
 
         self._constant_handler = ConstantHandler(const_uc=self._constant_uc)
 
@@ -122,8 +116,6 @@ class App:
         self.__app.include_router(self._constant_handler.router)
         self.__app.include_router(self._calc_handler.router)
 
-        fastapi_app = self.__app
-        return self.__app
 
     def get_app(self) -> fastapi.FastAPI:
         return self.__app
