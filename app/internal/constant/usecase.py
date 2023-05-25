@@ -16,9 +16,9 @@ class ConstantUseCase:
         self.__const_repo = const_repo
         self._data = None
 
-    async def load(self):
+    def load(self):
 
-        result = await self.__const_repo.get_data()
+        result = self.__const_repo.get_data()
 
         self._data = ModelData(
             county_prices=result[0],

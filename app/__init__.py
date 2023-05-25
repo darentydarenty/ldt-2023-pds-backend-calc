@@ -55,9 +55,6 @@ class App:
     def __init__(self):
         print("really did this shit")
 
-    @classmethod
-    async def build(cls):
-        self = cls()
         self.__settings = config.parse_settings()
 
         self._logger = Logger(
@@ -100,7 +97,7 @@ class App:
         self._constant_uc = ConstantUseCase(
             const_repo=self._constant_repo
         )
-        await self._constant_uc.load()
+        self._constant_uc.load()
 
         self._constant_handler = ConstantHandler(const_uc=self._constant_uc)
 
