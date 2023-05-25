@@ -100,12 +100,15 @@ class App:
             const_repo=self._constant_repo
         )
         asyncio.get_running_loop().create_task(self._constant_uc.load())
+        asyncio.get_running_loop().create_task(self._nested_init())
 
+    async def _nested_init(self):
         self._constant_handler = ConstantHandler(const_uc=self._constant_uc)
 
         self._calc_repo = CalculationsRepository(postgresql=self._postgresql)
+
         md = self._constant_uc.get_data()
-        print(md)
+
         self._calc_uc = CalculationsUseCase(
             calc_repo=self._calc_repo,
             model_data=md,
