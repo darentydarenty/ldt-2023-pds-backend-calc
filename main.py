@@ -2,5 +2,5 @@ import asyncio
 
 import app
 
-app = app.App.build()
+app = asyncio.create_task(app.App.build()).result()
 
