@@ -18,7 +18,8 @@ services:
       - migrations
 
     command: [
-      "poetry", "run", "uvicorn", "main:app",
+      "poetry", "run", "uvicorn",
+      "--factory", "main:app",
       "--host", "0.0.0.0",
       "--port", '5000',
     ]
