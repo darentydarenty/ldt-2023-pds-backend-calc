@@ -117,8 +117,6 @@ class App:
         self.__app.include_router(router)
         self.__app.include_router(self._constant_handler.router)
         self.__app.include_router(self._calc_handler.router)
-        time.sleep(30)
-        print("everything is okay")
 
     def get_app(self) -> fastapi.FastAPI:
         return self.__app
