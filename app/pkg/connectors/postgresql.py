@@ -4,6 +4,7 @@ import functools
 from contextlib import asynccontextmanager
 
 import aiopg
+from aiopg.connection import Cursor
 import pydantic
 from aiopg import Connection
 from psycopg2.extras import RealDictCursor
@@ -70,7 +71,7 @@ class Postgresql(BaseConnector):
 @asynccontextmanager
 async def get_connection(
         postgresql: Postgresql
-):
+) -> Cursor:
     async with postgresql.get_connect() as connection:
         async with (await connection.cursor(cursor_factory=RealDictCursor)) as cur:
             yield cur

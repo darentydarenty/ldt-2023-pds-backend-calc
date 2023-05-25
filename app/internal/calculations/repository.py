@@ -8,6 +8,7 @@ from app.pkg.connectors.postgresql import get_connection
 class CalculationsRepository:
     def __init__(self, postgresql: Postgresql):
         self.__db = postgresql
+        self.get_connection = get_connection
 
     async def get_report_by_tracker_id(self, tracker_id: str) -> ReportDAO:
         query = """
@@ -59,7 +60,7 @@ class CalculationsRepository:
                 WHERE
                     res.tracker_id = %s;
                 """
-        async with get_connection(self.__db) as cur:
+        async with self.get_connection(self.__db) as cur:
 
             await cur.execute(query, tracker_id)
 
