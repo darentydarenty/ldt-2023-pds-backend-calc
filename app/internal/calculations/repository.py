@@ -10,7 +10,7 @@ class CalculationsRepository:
         self.__db = postgresql
 
     async def get_report_by_tracker_id(self, tracker_id: str) -> ReportDAO:
-        query ="""
+        query = """
                 SELECT
                     
                     res.tracker_id,
@@ -60,12 +60,11 @@ class CalculationsRepository:
                     res.tracker_id = $1;
                 """
         async with get_connection(self.__db) as cur:
-
             await cur.execute(query, tracker_id)
-            data = await cur.fetchone()
+            data = await cur.fetchall()
             print(data)
 
-            return ReportDAO(**data)
+            return ReportDAO(**data[0])
 
     async def create_first_report(self):
         pass
