@@ -16,7 +16,6 @@ class CalculationsHandler:
                                   self.get_report_by_tracker_id)
 
     async def get_report_by_tracker_id(self, tracker_id: str):
-        print("skdmfosfmodfm")
         return await self._calc_uc.get_report_by_tracker_id(tracker_id)
 
 

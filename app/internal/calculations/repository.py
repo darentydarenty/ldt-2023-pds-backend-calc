@@ -60,14 +60,12 @@ class CalculationsRepository:
                     res.tracker_id = $1;
                 """
         async with get_connection(self.__db) as cur:
-            print("ksandgkjnsdjkgneiorknwioenviownem")
-            await cur.execute(query, tracker_id)
-            print("sokdgoasnaijsfinsfaijgnsifnfisnasf")
-            print(cur)
-            data = await cur.fetchall()
-            print(data)
 
-            return ReportDAO(**data[0])
+            await cur.execute(query, tracker_id)
+
+            data = await cur.fetchone()
+
+            return ReportDAO(**data)
 
     async def create_first_report(self):
         pass
