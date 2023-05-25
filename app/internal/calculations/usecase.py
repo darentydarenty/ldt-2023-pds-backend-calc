@@ -1,8 +1,11 @@
+from .repository import CalculationsRepository
 
 
 class CalculationsUseCase:
-    def __init__(self):
-        pass
+    _calc_repo: CalculationsRepository
+
+    def __init__(self, calc_repo: CalculationsRepository):
+        self._calc_repo = calc_repo
 
     def calculate(self):
         pass
