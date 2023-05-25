@@ -94,7 +94,7 @@ class App:
         self._constant_uc = ConstantUseCase(
             const_repo=self._constant_repo
         )
-        asyncio.get_event_loop().run_until_complete(self._constant_uc.load())
+        asyncio.wait_for(asyncio.create_task(self._constant_uc.load()), 10)
 
         self._constant_handler = ConstantHandler(const_uc=self._constant_uc)
 

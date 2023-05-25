@@ -68,7 +68,6 @@ class CalculationsRepository:
 
             return result
 
-
     async def create_first_report(self):
         pass
 
