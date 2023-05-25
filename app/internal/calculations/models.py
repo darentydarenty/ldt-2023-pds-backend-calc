@@ -159,3 +159,6 @@ class ReportDAO(BaseModel):
     workers_quantity: int
     county: str | None
 
+
+class ReportByTrackerCmd(BaseModel):
+    tracker_id: str

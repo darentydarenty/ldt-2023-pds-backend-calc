@@ -1,6 +1,6 @@
 from pydantic import BaseModel
 
-from app.internal.calculations.models import ReportDAO
+from app.internal.calculations.models import ReportDAO, ReportByTrackerCmd
 from app.pkg.connectors import Postgresql
 from app.pkg.connectors.postgresql import get_connection
 
@@ -57,7 +57,7 @@ class CalculationsRepository:
                 JOIN constant.patent_prices pp ON cf.patent_type = pp.patent_id
                 
                 WHERE
-                    res.tracker_id = $1;
+                    res.tracker_id = %s;
                 """
         async with get_connection(self.__db) as cur:
 

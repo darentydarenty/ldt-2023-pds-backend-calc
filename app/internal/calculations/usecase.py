@@ -18,5 +18,4 @@ class CalculationsUseCase:
 
     async def get_report_by_tracker_id(self, tracker_id: str) -> ReportDAO:
         res = await self._calc_repo.get_report_by_tracker_id(tracker_id)
-        print(res.json())
         return res
