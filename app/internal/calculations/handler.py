@@ -14,7 +14,7 @@ class CalculationsHandler:
 
         self.router.add_api_route(path="/info", methods=["get"],
                                   endpoint=self.get_report_by_tracker_id,
-                                  response_model=ReportResult)
+                                  response_model=ReportDAO)
 
     async def get_report_by_tracker_id(self, tracker_id: str):
         return self._calc_uc.get_report_by_tracker_id(tracker_id)
