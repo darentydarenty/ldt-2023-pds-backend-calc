@@ -101,7 +101,7 @@ class App:
         )
         asyncio.get_running_loop().create_task(self._constant_uc.load()).add_done_callback(self._nested_init)
 
-    def _nested_init(self):
+    def _nested_init(self, _a):
         self._constant_handler = ConstantHandler(const_uc=self._constant_uc)
 
         self._calc_repo = CalculationsRepository(postgresql=self._postgresql)
@@ -117,7 +117,6 @@ class App:
         self.__app.include_router(router)
         self.__app.include_router(self._constant_handler.router)
         self.__app.include_router(self._calc_handler.router)
-
 
     def get_app(self) -> fastapi.FastAPI:
         return self.__app
