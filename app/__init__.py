@@ -131,4 +131,4 @@ class App:
         return self.__app
 
 
-__all__ = ['App']
+__all__ = ['App', 'fastapi_app']
