@@ -1,3 +1,6 @@
+import asyncio
+
 import app
 
-app = app.App().get_app()
+app = app.App.build()
+

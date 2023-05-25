@@ -52,6 +52,11 @@ class App:
     __app: fastapi.FastAPI
 
     def __init__(self):
+        print("really did this shit")
+
+    @classmethod
+    async def build(cls):
+        self = cls()
         self.__settings = config.parse_settings()
 
         self._logger = Logger(
@@ -94,7 +99,7 @@ class App:
         self._constant_uc = ConstantUseCase(
             const_repo=self._constant_repo
         )
-        self._constant_uc.load()
+        await self._constant_uc.load()
 
         self._constant_handler = ConstantHandler(const_uc=self._constant_uc)
 
@@ -111,7 +116,13 @@ class App:
         self.__app.include_router(self._constant_handler.router)
         self.__app.include_router(self._calc_handler.router)
 
+        return await self.a_get_app()
+
     def get_app(self) -> fastapi.FastAPI:
         return self.__app
 
+    async def a_get_app(self) -> fastapi.FastAPI:
+        return self.__app
 
+
+__all__ = ['App']
