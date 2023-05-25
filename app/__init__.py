@@ -13,6 +13,7 @@ from app.pkg.logger import Logger
 from app.pkg.encrypt import fernet
 
 from app.internal.constant import ConstantRepository, ConstantUseCase, ConstantHandler
+from app.internal.calculations import CalculationsHandler, CalculationsRepository, CalculationsUseCase
 
 from pydantic import BaseModel
 
@@ -92,10 +93,16 @@ class App:
             const_repo=self._constant_repo
         )
         asyncio.create_task(self._constant_uc.load())
-        print(self._constant_uc.get_data())
+
         self._constant_handler = ConstantHandler(const_uc=self._constant_uc)
+
+        self._calc_repo = CalculationsRepository(postgresql=self._postgresql)
+        self._calc_uc = CalculationsUseCase()
+        self._calc_handler = CalculationsHandler(calc_uc=self._calc_uc)
+
         self.__app.include_router(router)
         self.__app.include_router(self._constant_handler.router)
+        self.__app.include_router(self._calc_handler.router)
 
     def get_app(self) -> fastapi.FastAPI:
         return self.__app
