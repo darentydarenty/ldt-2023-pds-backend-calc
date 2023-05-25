@@ -10,7 +10,7 @@ from app.pkg.connectors.postgresql import get_connection
 class CalculationsRepository:
     def __init__(self, postgresql: Postgresql):
         self.__db = deepcopy(postgresql)
-        self.get_connection = deepcopy(get_connection)
+        self.get_connection = get_connection
 
     async def get_report_by_tracker_id(self, tracker_id: str) -> ReportDAO:
         query = """
