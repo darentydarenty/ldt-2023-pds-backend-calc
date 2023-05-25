@@ -4,6 +4,8 @@ import logging
 
 __all__ = ["App"]
 
+import time
+
 import fastapi
 from fastapi import APIRouter
 
@@ -93,7 +95,9 @@ class App:
             const_repo=self._constant_repo
         )
         task = asyncio.create_task(self._constant_uc.load())
-        task.done()
+        while not task.done():
+            time.sleep(1)
+
         self._constant_handler = ConstantHandler(const_uc=self._constant_uc)
 
         self._calc_repo = CalculationsRepository(postgresql=self._postgresql)
