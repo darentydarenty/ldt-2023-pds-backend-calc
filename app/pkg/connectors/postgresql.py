@@ -69,7 +69,6 @@ class Postgresql(BaseConnector):
 
 
 
-@asynccontextmanager
 async def get_connection(
         postgresql: Postgresql
 ) -> Cursor:
