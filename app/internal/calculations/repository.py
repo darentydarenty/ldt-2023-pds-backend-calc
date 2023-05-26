@@ -69,7 +69,7 @@ class CalculationsRepository:
 
         async with get_connection(self.__db) as cur:
 
-            await cur.execute(query, tracker_id)
+            await cur.execute(query, (tracker_id,))
 
             data = await cur.fetchone()
             print(data)
