@@ -13,7 +13,13 @@ class ConstantHandler:
         self.router = fastapi.routing.APIRouter(prefix="/constant")
 
         self.router.add_api_route("/", self.get)
+        self.router.add_api_route("/industries", self.get_industries)
 
     async def get(self):
 
         return await self.__const_uc._async_get_data()
+
+
+    async def get_industries(self):
+
+        return await self.__const_uc.get_industries()

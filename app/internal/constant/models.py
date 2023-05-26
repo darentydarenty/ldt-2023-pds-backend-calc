@@ -38,3 +38,7 @@ class ModelData(BaseModel):
     patent_prices:  list[PatentPricesDAO]
     county_prices:  list[CountyPricesDAO]
 
+
+class IndustriesResponse(BaseModel):
+    industries: list[str]
+

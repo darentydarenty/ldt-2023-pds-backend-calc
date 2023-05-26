@@ -39,5 +39,12 @@ class ConstantUseCase:
         )
         return self._data
 
+    async def get_industries(self) -> IndustriesResponse:
+        result = await self.__const_repo.get_industries()
+
+        return IndustriesResponse(
+            industries=result
+        )
+
     def get_data(self) -> ModelData:
         return self._data

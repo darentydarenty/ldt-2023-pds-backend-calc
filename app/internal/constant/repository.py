@@ -39,6 +39,17 @@ class ConstantRepository:
 
         return result
 
+    async def get_industries(self) -> list[str]:
+        query = """
+                SELECT industry_name FROM constant.mean_salaries;
+                """
+
+        async with get_connection(self.__db) as cur:
+            await cur.execute(query)
+            data = await cur.fetchall()
+
+            return [r["industry_name"] for r in data]
+
     async def get_county_prices(self) -> list[CountyPricesDAO]:
         query = """
                 SELECT * FROM constant.county_prices;
