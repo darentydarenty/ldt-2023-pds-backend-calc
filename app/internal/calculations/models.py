@@ -49,6 +49,43 @@ class ModelCompanyData(BaseModel):
     operations: int
     other_needs: list[int]
 
+
+class StaffExpenses(BaseModel):
+    record_id: int
+
+    staff_expenses: int
+    salaries_expenses: int
+    pension_expenses: int
+    medical_expenses: int
+
+
+class EstateExpenses(BaseModel):
+    record_id: int
+
+    estate_expenses: int
+    land_expenses: int
+    building_expenses: int
+
+
+class TaxExpenses(BaseModel):
+    record_id: int
+
+    tax_expenses: int
+    land_tax: int
+    estate_tax: int
+    income_tax: int
+
+
+class ServiceExpenses(BaseModel):
+    record_id: int
+
+    service_expenses: int
+    duty_expenses: int
+    bookkeeping_expenses: int
+    patent_expenses: int
+    machine_expenses: int
+
+
 class CompanyPredict(BaseModel):
     # result
     total_expenses: int

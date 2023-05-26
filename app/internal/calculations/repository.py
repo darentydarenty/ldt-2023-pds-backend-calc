@@ -225,5 +225,76 @@ class CalculationsRepository:
 
             return result
 
-    async def update_report(self):
-        pass
+    async def insert_service_expenses(self, params: ServiceExpenses):
+        query = """
+                INSERT INTO
+                    calcs.services
+                    (record_id, service_expenses,
+                    duty_expenses, bookkeeping_expenses,
+                    patent_expenses, machine_expenses)
+                VALUES 
+                    (%(record_id)s, %(service_expenses)s,
+                    %(duty_expenses)s, %(bookkeeping_expenses)s,
+                    %(patent_expenses)s, %(machine_expenses)s);
+                """
+        async with get_connection(self.__db) as cur:
+            await cur.execute(query, params.dict())
+
+    async def insert_staff_expenses(self, params: StaffExpenses):
+        query = """
+                INSERT INTO
+                    calcs.staff
+                    (record_id, staff_expenses,
+                    salaries_expenses, pension_expenses,
+                    medical_expenses) 
+                VALUES (
+                    %(record_id)s, %(staff_expenses)s,
+                    %(salaries_expenses)s, %(pension_expenses)s,
+                    %(medical_expenses)s
+                )
+                
+                """
+
+        async with get_connection(self.__db) as cur:
+            await cur.execute(query, params.dict())
+
+    async def insert_estate_expenses(self, params: EstateExpenses):
+        query = """
+                        INSERT INTO
+                            calcs.estate
+                            (record_id, estate_expenses,
+                            land_expenses, building_expenses) 
+                        VALUES (
+                            %(record_id)s, %(estate_expenses)s,
+                            %(land_expenses)s, %(building_expenses)s
+                        )
+
+                        """
+
+        async with get_connection(self.__db) as cur:
+            await cur.execute(query, params.dict())
+
+    async def insert_taxes_expanses(self, params: TaxExpenses):
+        query = """
+                INSERT INTO
+                    calcs.taxes
+                    (record_id, tax_expenses,
+                    land_tax, estate_tax,
+                    income_tax)
+                VALUES (
+                    %(record_id)s, %(tax_expenses)s,
+                    %(land_expenses)s, %(estate_expenses)s,
+                    %(income_expenses)s
+                )
+                """
+        async with get_connection(self.__db) as cur:
+            await cur.execute(query, params.dict())
+
+    async def update_report(self, record_id: int, total_expenses: int):
+        query = """
+                UPDATE calcs.result SET total_expenses = %s WHERE record_id=%s
+                """
+
+        async with get_connection(self.__db) as cur:
+            await cur.execute(query, (total_expenses, record_id))
+

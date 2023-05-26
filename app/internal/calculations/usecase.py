@@ -1,3 +1,4 @@
+import asyncio
 import datetime
 import uuid
 
@@ -69,7 +70,7 @@ class CalculationsUseCase:
         self._calc_repo = calc_repo
         self._exp_model = ExpensesModel(model_data)
 
-    async def calculate(self, params: CalculationRequest):
+    async def calculate(self, params: CalculationRequest) -> ReportResult:
         tracker_id = str(uuid.uuid4())
         record_id = await self._calc_repo.insert_record_raw(
             tracker_id=tracker_id,
@@ -113,7 +114,52 @@ class CalculationsUseCase:
             patent_type=indexes_dict['patent_type']
         )
         prediction_result = self._exp_model.predict(company4model)
-        print(prediction_result)
+
+        await asyncio.gather(
+            self._calc_repo.update_report(
+                                        record_id=record_id,
+                                        total_expenses=prediction_result.total_expenses,
+                                          ),
+            self._calc_repo.insert_estate_expenses(
+                EstateExpenses(
+                    record_id=record_id,
+                    estate_expenses=prediction_result.estate_expenses,
+                    land_expenses=prediction_result.land_expenses,
+                    building_expenses=prediction_result.building_expenses,
+                )
+            ),
+            self._calc_repo.insert_service_expenses(
+                ServiceExpenses(
+                    record_id=record_id,
+                    service_expenses=prediction_result.service_expenses,
+                    duty_expenses=prediction_result.duty_expenses,
+                    bookkeeping_expenses=prediction_result.bookkeeping_expenses,
+                    patent_expenses=prediction_result.patent_expenses,
+                    machine_expenses=prediction_result.machine_expenses,
+                )
+            ),
+            self._calc_repo.insert_staff_expenses(
+                StaffExpenses(
+                    record_id=record_id,
+                    staff_expenses=prediction_result.staff_expenses,
+                    salaries_expenses=prediction_result.salaries_expenses,
+                    pension_expenses=prediction_result.pension_expenses,
+                    medical_expenses=prediction_result.medical_expenses,
+
+                )
+            ),
+            self._calc_repo.insert_taxes_expanses(
+                TaxExpenses(
+                    record_id=record_id,
+                    tax_expenses=prediction_result.tax_expenses,
+                    land_tax=prediction_result.land_tax,
+                    estate_tax=prediction_result.estate_tax,
+                    income_tax=prediction_result.income_tax,
+                )
+            )
+        )
+
+        return await self.get_report_by_tracker_id(tracker_id)
 
 
 
