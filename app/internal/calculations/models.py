@@ -1,3 +1,5 @@
+import datetime
+
 from pydantic import BaseModel
 
 
@@ -114,7 +116,7 @@ class ReportDAO(BaseModel):
     # base
     tracker_id: str
     total_expenses: int
-    date_create: str
+    date_create: datetime.datetime
     report_name: str
 
     # staff
