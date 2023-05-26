@@ -75,6 +75,7 @@ async def get_connection(
     async with postgresql.get_connect() as connection:
         async with connection.cursor(cursor_factory=RealDictCursor) as cur:
             try:
+                print(cur.description)
                 yield cur
             except:
                 cur.close()
