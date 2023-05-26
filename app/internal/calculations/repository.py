@@ -129,7 +129,7 @@ class CalculationsRepository:
         async with get_connection(self.__db) as cur:
             await cur.execute(query)
             data = await cur.fetchall()
-
+            print(data)
             return [ReportDAO(**r) for r in data]
 
     async def create_first_report(self):
