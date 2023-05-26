@@ -1,5 +1,6 @@
 from copy import deepcopy
 
+from psycopg2.extras import RealDictCursor
 from pydantic import BaseModel
 
 from app.internal.calculations.models import ReportDAO, ReportByTrackerCmd
@@ -62,13 +63,17 @@ class CalculationsRepository:
                 WHERE
                     res.tracker_id = %s;
                 """
-        async with self.get_connection(self.__db) as cur:
+        async with self.__db.get_connect() as conn:
+            async with conn.cursor(cursor_factory=RealDictCursor) as cur:
 
-            await cur.execute(query, tracker_id)
 
-            data = await cur.fetchone()
+        # async with self.get_connection(self.__db) as cur:
+        #
+                await cur.execute(query, tracker_id)
 
-            return ReportDAO(**data)
+                data = await cur.fetchone()
+
+                return ReportDAO(**data)
 
     async def create_first_report(self):
         pass
