@@ -95,7 +95,7 @@ class CalculationsUseCase:
                 user_id=params.user_id,
 
                 project_name=params.company.project_name,
-                organisation_type=params.company.organization_type,
+                organization_type=params.company.organization_type,
                 workers_quantity=params.company.workers_quantity,
                 industry=params.company.industry,
                 county=params.company.county,
