@@ -28,5 +28,13 @@ class ConstantUseCase:
             patent_prices=result[4]
         )
 
-    def get_data(self) -> ModelData:
+    async def get_data(self) -> ModelData:
+        result = await self.__const_repo.get_data()
+        self._data = ModelData(
+            county_prices=result[0],
+            machine_prices=result[1],
+            mean_salaries=result[2],
+            other_needs=result[3],
+            patent_prices=result[4]
+        )
         return self._data
