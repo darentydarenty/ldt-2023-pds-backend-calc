@@ -62,9 +62,9 @@ class Postgresql(BaseConnector):
         """
         # my code
         async with aiopg.connect(dsn=self.get_dsn()) as listenConn:
-        async with aiopg.create_pool(dsn=self.get_dsn()) as notifyPool:
-            async with notifyPool.acquire() as conn:
-                yield conn
+            async with aiopg.create_pool(dsn=self.get_dsn()) as notifyPool:
+                async with notifyPool.acquire() as conn:
+                    yield conn
         
         
         # Tima's changes 26.05 4:30
