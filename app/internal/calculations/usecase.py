@@ -11,7 +11,7 @@ def convert_report(result: ReportDAO) -> ReportResult:
     return ReportResult(
         tracker_id=result.tracker_id,
         total_expenses=result.total_expenses,
-        input_data=CompanyData(
+        input=CompanyData(
             project_name=result.project_name,
             organization_type=result.organization_type,
             workers_quantity=result.workers_quantity,
@@ -29,7 +29,7 @@ def convert_report(result: ReportDAO) -> ReportResult:
             other_needs=result.other_needs
 
         ),
-        output_data=OutputData(
+        output=OutputData(
             service=ServiceCategory(
                 service_expenses=result.service_expenses,
                 duty_expenses=result.duty_expenses,
