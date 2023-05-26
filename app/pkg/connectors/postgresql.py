@@ -68,7 +68,7 @@ class Postgresql(BaseConnector):
                 try:
                     yield conn
                 finally:
-                    await pool.release()
+                    await pool.release(conn)
 
 
 @asynccontextmanager
