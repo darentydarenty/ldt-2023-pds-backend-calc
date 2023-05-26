@@ -1,5 +1,6 @@
 from copy import deepcopy
 
+from aiopg import Connection
 from psycopg2.extras import RealDictCursor
 from pydantic import BaseModel
 
@@ -9,8 +10,9 @@ from app.pkg.connectors.postgresql import get_connection
 
 
 class CalculationsRepository:
-    def __init__(self, postgresql: Postgresql):
+    def __init__(self, postgresql: Postgresql, conn: Connection):
         self.__db = postgresql
+        self.__conn = conn
         self.get_connection = get_connection
 
     async def get_report_by_tracker_id(self, tracker_id: str) -> ReportDAO:
@@ -63,17 +65,15 @@ class CalculationsRepository:
                 WHERE
                     res.tracker_id = %s;
                 """
-        async with self.__db.get_connect() as conn:
-            async with conn.cursor(cursor_factory=RealDictCursor) as cur:
 
-
+        async with self.__conn.cursor(cursor_factory=RealDictCursor) as cur:
         # async with self.get_connection(self.__db) as cur:
         #
-                await cur.execute(query, tracker_id)
+            await cur.execute(query, tracker_id)
 
-                data = await cur.fetchone()
+            data = await cur.fetchone()
 
-                return ReportDAO(**data)
+            return ReportDAO(**data)
 
     async def create_first_report(self):
         pass
