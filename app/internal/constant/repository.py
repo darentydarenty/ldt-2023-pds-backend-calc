@@ -68,7 +68,7 @@ class ConstantRepository:
         async with get_connection(self.__db) as cur:
             await cur.execute(query)
             result = await cur.fetchall()
-
+            cur.release()
             return [MeanSalariesDAO(**r) for r in result]
 
     async def get_other_needs(self) -> list[OtherNeedsDAO]:

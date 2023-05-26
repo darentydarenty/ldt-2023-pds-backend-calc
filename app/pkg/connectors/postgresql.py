@@ -65,10 +65,7 @@ class Postgresql(BaseConnector):
 
         async with self.pool as pool:
             async with pool.acquire() as conn:
-                try:
-                    yield conn
-                except:
-                    await pool.release(conn)
+                yield conn
 
 
 
@@ -77,8 +74,9 @@ async def get_connection(
         postgresql: Postgresql
 ) -> Cursor:
     async with postgresql.get_connect() as connection:
-        async with (await connection.cursor(cursor_factory=RealDictCursor)) as cur:
+        async with connection.cursor(cursor_factory=RealDictCursor) as cur:
             yield cur
+
 
 
 
