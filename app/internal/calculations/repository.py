@@ -163,7 +163,7 @@ class CalculationsRepository:
                 FROM constant.mean_salaries
                 WHERE industry_name = %(industry)s),
                  
-                 %(organisation_type)s,
+                 %(organization_type)s,
                  %(workers_quantity)s,
                  (
                  SELECT
