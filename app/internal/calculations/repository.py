@@ -213,7 +213,7 @@ class CalculationsRepository:
                             need_name = ANY(%(other_needs)s)
                     )
                 )
-                RETURNING machine_names, other_needs;
+                RETURNING machine_names, other_needs, patent_type;
             """: company_full.dict()
         }
         result = []
