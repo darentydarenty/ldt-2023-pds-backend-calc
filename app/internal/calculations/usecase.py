@@ -105,11 +105,11 @@ class CalculationsUseCase:
         company4model = ModelCompanyData(
             params.company.dict(
                 exclude={'machine_names', 'county', 'industry', 'other_needs'},
-                machine_names=indexes_dict['machine_names'],
-                county=indexes_dict['county'],
-                industry=indexes_dict['industry'],
-                other_needs=indexes_dict['other_needs']
-            )
+            ),
+            machine_names=indexes_dict['machine_names'],
+            county=indexes_dict['county'],
+            industry=indexes_dict['industry'],
+            other_needs=indexes_dict['other_needs']
         )
         prediction_result = self._exp_model.predict(company4model)
         print(prediction_result)
