@@ -63,7 +63,7 @@ class Postgresql(BaseConnector):
         # my code
         
         async with aiopg.create_pool(dsn=self.get_dsn()) as notifyPool:
-            print("IS here?)
+            print("IS here?")
             async with notifyPool.acquire() as notifyConn:
                   print("or here?")
                   print(notifyConn.dsn)
