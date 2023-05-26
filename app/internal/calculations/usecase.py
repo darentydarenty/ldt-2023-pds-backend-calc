@@ -49,7 +49,7 @@ def convert_report(result: ReportDAO) -> ReportResult:
                 medical_expenses=result.medical_expenses
             ),
             tax=TaxCategory(
-                tax_expesnses=result.tax_expenses,
+                tax_expenses=result.tax_expenses,
                 land_tax=result.land_tax,
                 estate_tax=result.estate_tax,
                 income_tax=result.income_tax
