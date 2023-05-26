@@ -74,7 +74,7 @@ class CalculationsUseCase:
         tracker_id = str(uuid.uuid4())
         record_id = await self._calc_repo.insert_record_raw(
             tracker_id=tracker_id,
-            report_name=f"Отчёт {datetime.datetime.now().strftime('YYYY-MM-ddTHH:mm:ss')}",
+            report_name=f"Отчёт {datetime.datetime.now().strftime()}",
         )
 
         indexes_list = await self._calc_repo.insert_company_info(
