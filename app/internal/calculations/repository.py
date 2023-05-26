@@ -10,9 +10,8 @@ from app.pkg.connectors.postgresql import get_connection
 
 
 class CalculationsRepository:
-    def __init__(self, postgresql: Postgresql, conn: Connection):
+    def __init__(self, postgresql: Postgresql):
         self.__db = postgresql
-        self.__conn = conn
         self.get_connection = get_connection
 
     async def get_report_by_tracker_id(self, tracker_id: str) -> ReportDAO:
@@ -51,24 +50,24 @@ class CalculationsRepository:
                    cs.organization_type, cs.project_name, cs.workers_quantity
                 FROM
                     calcs.result res
-                JOIN calcs.estate e on res.record_id = e.record_id
-                JOIN calcs.company_full cf on res.record_id = cf.record_id
-                JOIN calcs.company_short cs on res.record_id = cs.record_id
-                JOIN calcs.services s on res.record_id = s.record_id
-                JOIN calcs.staff st on res.record_id = st.record_id
-                JOIN calcs.taxes t on res.record_id = t.record_id
-                
-                JOIN constant.county_prices cp ON cs.county = cp.county_id
-                JOIN constant.mean_salaries ms ON cs.industry = ms.industry_id
-                JOIN constant.patent_prices pp ON cf.patent_type = pp.patent_id
+                    
+                LEFT JOIN calcs.estate e on res.record_id = e.record_id
+                LEFT JOIN calcs.company_full cf on res.record_id = cf.record_id
+                LEFT JOIN calcs.company_short cs on res.record_id = cs.record_id
+                LEFT JOIN calcs.services s on res.record_id = s.record_id
+                LEFT JOIN calcs.staff st on res.record_id = st.record_id
+                LEFT JOIN calcs.taxes t on res.record_id = t.record_id
+
+
+                LEFT JOIN constant.county_prices cp ON cs.county = cp.county_id
+                LEFT JOIN constant.mean_salaries ms ON cs.industry = ms.industry_id
+                LEFT JOIN constant.patent_prices pp ON cf.patent_type = pp.patent_id
                 
                 WHERE
                     res.tracker_id = %s;
                 """
 
-        async with self.__conn.cursor(cursor_factory=RealDictCursor) as cur:
-        # async with self.get_connection(self.__db) as cur:
-        #
+        async with get_connection(self.__db) as cur:
             await cur.execute(query, tracker_id)
 
             data = await cur.fetchone()

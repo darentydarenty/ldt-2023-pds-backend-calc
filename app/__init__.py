@@ -93,8 +93,7 @@ class App:
             self.__settings.FERNET_KEY.get_secret_value()
         )
 
-        async with self._postgresql.get_connect() as conn:
-            self._calc_repo = CalculationsRepository(postgresql=self._postgresql, conn=conn)
+        self._calc_repo = CalculationsRepository(postgresql=self._postgresql)
 
         self._constant_repo = ConstantRepository(
             postgresql=self._postgresql

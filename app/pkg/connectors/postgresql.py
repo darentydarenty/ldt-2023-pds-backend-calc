@@ -74,7 +74,10 @@ async def get_connection(
 ) -> Cursor:
     async with postgresql.get_connect() as connection:
         async with connection.cursor(cursor_factory=RealDictCursor) as cur:
-            yield cur
+            try:
+                yield cur
+            except:
+                cur.close()
 
 
 
