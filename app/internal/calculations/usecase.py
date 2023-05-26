@@ -76,7 +76,7 @@ class CalculationsUseCase:
             report_name=f"Отчёт {datetime.datetime.now().strftime('YYYY-MM-ddTHH:mm:ss')}",
         )
 
-        await self._calc_repo.insert_company_info(
+        indexes_list = await self._calc_repo.insert_company_info(
             company_full=CompanyFullDAO(
                 record_id=record_id,
 
@@ -101,6 +101,18 @@ class CalculationsUseCase:
                 county=params.company.county,
             )
         )
+        indexes_dict = dict(indexes_list)
+        company4model = ModelCompanyData(
+            params.company.dict(
+                exclude={'machine_names', 'county', 'industry', 'other_needs'},
+                machine_names=indexes_dict['machine_names'],
+                county=indexes_dict['county'],
+                industry=indexes_dict['industry'],
+                other_needs=indexes_dict['other_needs']
+            )
+        )
+        prediction_result = self._exp_model.predict(company4model)
+        print(prediction_result)
 
 
 

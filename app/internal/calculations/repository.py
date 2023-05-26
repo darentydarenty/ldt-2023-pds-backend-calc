@@ -149,7 +149,7 @@ class CalculationsRepository:
 
     async def insert_company_info(self,
                                   company_full: CompanyFullDAO,
-                                  company_short: CompanyShortDAO):
+                                  company_short: CompanyShortDAO) -> list[tuple]:
         queries = {
             """
             INSERT INTO
@@ -172,7 +172,8 @@ class CalculationsRepository:
                     constant.county_prices
                 WHERE
                     county_name = %(county)s)
-                );
+                )
+            RETURNING county, industry;
                  
             """: company_short.dict(),
             """
@@ -212,12 +213,17 @@ class CalculationsRepository:
                             need_name = ANY(%(other_needs)s)
                     )
                 )
+                RETURNING machine_names, other_needs;
             """: company_full.dict()
         }
-
+        result = []
         async with get_connection(self.__db) as cur:
             for query, param in queries.items():
                 await cur.execute(query, param)
+                data: dict = await cur.fetchone()
+                result.extend([(k, v) for k, v in data.items()])
+
+            return result
 
     async def update_report(self):
         pass

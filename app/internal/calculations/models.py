@@ -21,14 +21,33 @@ class CompanyData(BaseModel):
     # company_full
     land_area: int | None
     building_area: int | None
-    machine_names: list | None
-    machine_quantities: list | None
+    machine_names: list[str] | None
+    machine_quantities: list[int] | None
     patent_type: str | None
     bookkeeping: bool | None
     tax_system: str | None
     operations: int | None
-    other_needs: list | None
+    other_needs: list[str] | None
 
+
+class ModelCompanyData(BaseModel):
+    # company_short
+    project_name: str
+    organization_type: str
+    workers_quantity: int
+    industry: int
+    county: int
+
+    # company_full
+    land_area: int
+    building_area: int
+    machine_names: list[int]
+    machine_quantities: list[int]
+    patent_type: int
+    bookkeeping: int
+    tax_system: str
+    operations: int
+    other_needs: list[int]
 
 class CompanyPredict(BaseModel):
     # result

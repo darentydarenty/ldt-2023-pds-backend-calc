@@ -1,6 +1,6 @@
 import numpy as np
 
-from app.internal.calculations.models import CompanyPredict, CompanyData
+from app.internal.calculations.models import CompanyPredict, ModelCompanyData
 from app.internal.constant.models import ModelData
 
 
@@ -119,8 +119,7 @@ class ExpensesModel:
         PatentExpenses = self.PatentPrices[company_data['patent_type']]
         BookKeepingExpenses = self.pred_duration * self._bookkeeping_formula(company_data['workers_quantity'],
                                                                              company_data['operations'],
-                                                                             company_data['tax_system']) if \
-        company_data['bookkeeping'] else 0
+                                                                             company_data['tax_system']) if company_data['bookkeeping'] else 0
         LandTax = LandExpenses * self.land_coeff if company_data['tax_system'] != 'ЕСНХ' else 0
         BuildingTax = BuildingExpenses * self.building_coeff
         IncomeTax = Salaries * self.income_coeff if company_data['tax_system'] == 'ОСН' or company_data[
@@ -154,6 +153,6 @@ class ExpensesModel:
         }
         return output
 
-    def predict(self, company_data: CompanyData) -> CompanyPredict:
+    def predict(self, company_data: ModelCompanyData) -> CompanyPredict:
         tmp_dict = company_data.dict()
         return CompanyPredict(**self.predict_dict(tmp_dict))
