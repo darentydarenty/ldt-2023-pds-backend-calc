@@ -61,7 +61,7 @@ class Postgresql(BaseConnector):
             ``aiopg.Connection instance`` in asynchronous context manager.
         """
         if self.pool is None:
-            self.pool = aiopg.create_pool(dsn=self.get_dsn())
+            self.pool = await aiopg.create_pool(dsn=self.get_dsn())
 
         async with self.pool as pool:
             async with pool.acquire() as conn:
