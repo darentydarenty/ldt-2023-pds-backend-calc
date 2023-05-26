@@ -103,7 +103,7 @@ class CalculationsUseCase:
         )
         indexes_dict = dict(indexes_list)
         company4model = ModelCompanyData(
-            params.company.dict(
+            **params.company.dict(
                 exclude={'machine_names', 'county', 'industry', 'other_needs'},
             ),
             machine_names=indexes_dict['machine_names'],
