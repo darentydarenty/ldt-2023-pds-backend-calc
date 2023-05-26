@@ -72,7 +72,7 @@ class CalculationsRepository:
             await cur.execute(query, tracker_id)
 
             data = await cur.fetchone()
-
+            print(data)
             return ReportDAO(**data)
 
     async def create_first_report(self):
