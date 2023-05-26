@@ -13,7 +13,8 @@ class CalculationsHandler:
         self.router = fastapi.routing.APIRouter(prefix="/calc")
 
         self.router.add_api_route("/info",
-                                  self.get_report_by_tracker_id)
+                                  self.get_report_by_tracker_id,
+                                  methods=["GET"])
 
     async def get_report_by_tracker_id(self, tracker_id: str):
         result = await self._calc_uc.get_report_by_tracker_id(tracker_id)
