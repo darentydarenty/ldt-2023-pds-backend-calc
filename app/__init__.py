@@ -93,7 +93,7 @@ class App:
             self.__settings.FERNET_KEY.get_secret_value()
         )
 
-        self._calc_repo = CalculationsRepository(postgresql=self._postgresql)
+
 
         self._constant_repo = ConstantRepository(
             postgresql=self._postgresql
@@ -106,7 +106,7 @@ class App:
     def _nested_init(self, _a):
         self._constant_handler = ConstantHandler(const_uc=self._constant_uc)
 
-
+        self._calc_repo = CalculationsRepository(postgresql=self._postgresql)
 
         md = self._constant_uc.get_data()
 
