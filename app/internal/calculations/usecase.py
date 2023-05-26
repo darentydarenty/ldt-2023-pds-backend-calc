@@ -74,5 +74,7 @@ class CalculationsUseCase:
 
         return convert_report(result)
 
-    async def get_all_reports(self) -> list[ReportDAO]:
-        return await self._calc_repo.get_all_reports()
+    async def get_all_reports(self, user_id: int | None = None) -> list[ReportResult]:
+        result = await self._calc_repo.get_all_reports(user_id)
+
+        return [convert_report(r) for r in result]

@@ -53,36 +53,34 @@ class Postgresql(BaseConnector):
             f"{self.database_name}"
         )
 
-#     @asynccontextmanager
-#     async def get_connect(self) -> Connection:
-#         """Create pool of connectors to a Postgres database.
+    #     @asynccontextmanager
+    #     async def get_connect(self) -> Connection:
+    #         """Create pool of connectors to a Postgres database.
 
-#         Yields:
-#             ``aiopg.Connection instance`` in asynchronous context manager.
-#         """
-#         # my code
-        
+    #         Yields:
+    #             ``aiopg.Connection instance`` in asynchronous context manager.
+    #         """
+    #         # my code
 
-#         # Tima's changes 26.05 4:30
-#         if self.pool is None:
-#             self.pool = await aiopg.create_pool(dsn=self.get_dsn())
+    #         # Tima's changes 26.05 4:30
+    #         if self.pool is None:
+    #             self.pool = await aiopg.create_pool(dsn=self.get_dsn())
 
-#         async with (await self.pool) as conn:
-#             # async with pool.acquire() as conn:
-#             yield conn
+    #         async with (await self.pool) as conn:
+    #             # async with pool.acquire() as conn:
+    #             yield conn
 
-
-# @asynccontextmanager
-# async def get_connection(
-#         postgresql: Postgresql
-# ) -> Cursor:
-#     async with postgresql.get_connect() as connection:
-#         async with connection.cursor(cursor_factory=RealDictCursor) as cur:
-#             try:
-#                 print(cur.description)
-#                 yield cur
-#             except:
-#                 cur.close()
+    # @asynccontextmanager
+    # async def get_connection(
+    #         postgresql: Postgresql
+    # ) -> Cursor:
+    #     async with postgresql.get_connect() as connection:
+    #         async with connection.cursor(cursor_factory=RealDictCursor) as cur:
+    #             try:
+    #                 print(cur.description)
+    #                 yield cur
+    #             except:
+    #                 cur.close()
     @asynccontextmanager
     async def get_connect(self) -> Connection:
         """Create pool of connectors to a Postgres database.
@@ -91,7 +89,6 @@ class Postgresql(BaseConnector):
             ``aiopg.Connection instance`` in asynchronous context manager.
         """
         # my code
-        
 
         if self.pool is None:
             self.pool = await aiopg.create_pool(
@@ -104,18 +101,12 @@ class Postgresql(BaseConnector):
             yield conn
 
 
-
 @asynccontextmanager
 async def get_connection(
-      postgresql: Postgresql,
-      cursor_factory: type = RealDictCursor,
-      **kwargs,
+        postgresql: Postgresql,
+        cursor_factory: type = RealDictCursor,
+        **kwargs,
 ) -> Cursor:
-      async with postgresql.get_connect() as conn:
-            async with conn.cursor(cursor_factory=cursor_factory, **kwargs) as cursor:
-                  yield cursor
-
-
-
-
-
+    async with postgresql.get_connect() as conn:
+        async with conn.cursor(cursor_factory=cursor_factory, **kwargs) as cursor:
+            yield cursor

@@ -76,7 +76,7 @@ class CalculationsRepository:
 
             return ReportDAO(**data)
 
-    async def get_all_reports(self) -> list[ReportDAO]:
+    async def get_all_reports(self, user_id: int | None = None) -> list[ReportDAO]:
         query = """
                 SELECT
                     res.tracker_id,
@@ -122,11 +122,15 @@ class CalculationsRepository:
 
                 LEFT JOIN constant.county_prices cp ON cs.county = cp.county_id
                 LEFT JOIN constant.mean_salaries ms ON cs.industry = ms.industry_id
-                LEFT JOIN constant.patent_prices pp ON cf.patent_type = pp.patent_id;
+                LEFT JOIN constant.patent_prices pp ON cf.patent_type = pp.patent_id
                 """
-
+        if user_id is not None:
+            query = f"{query} WHERE cs.user_id = %s;"
         async with get_connection(self.__db) as cur:
-            await cur.execute(query)
+            if user_id is None:
+                await cur.execute(query)
+            else:
+                await cur.execute(query, (user_id, ))
             data = await cur.fetchall()
 
             return [ReportDAO(**r) for r in data]

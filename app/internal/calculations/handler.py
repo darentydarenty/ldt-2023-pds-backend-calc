@@ -20,9 +20,7 @@ class CalculationsHandler:
                                   methods=["GET"])
 
     async def get_report_by_tracker_id(self, tracker_id: str):
-        result = await self._calc_uc.get_report_by_tracker_id(tracker_id)
-        print(result)
-        return result
+        return await self._calc_uc.get_report_by_tracker_id(tracker_id)
 
-    async def get_all_reports(self):
-        return await self._calc_uc.get_all_reports()
+    async def get_all_reports(self, user_id: int | None):
+        return await self._calc_uc.get_all_reports(user_id)
