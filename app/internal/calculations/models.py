@@ -119,14 +119,14 @@ class ReportDAO(BaseModel):
 
     # staff
     salaries_expenses: int
-    staff_expanses: int
-    pension: int
+    staff_expenses: int
+    pension_expenses: int
     medical_expenses: int
 
     # taxes
     estate_tax: int
     land_tax: int
-    tax_expanses: int
+    tax_expenses: int
     income_tax: int
 
     # services
