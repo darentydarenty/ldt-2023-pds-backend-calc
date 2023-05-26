@@ -62,20 +62,14 @@ class Postgresql(BaseConnector):
         """
         # my code
         
-        async with aiopg.create_pool(dsn=self.get_dsn()) as notifyPool:
-            print("IS here?")
-            async with notifyPool.acquire() as notifyConn:
-                  print("or here?")
-                  print(notifyConn.dsn)
-                  print(notifyConn.status)
-                  yield notifyConn
-        # Tima's changes 26.05 4:30
-        #if self.pool is None:
-            #self.pool = await aiopg.create_pool(dsn=self.get_dsn())
 
-        #async with (await self.pool) as conn:
-            # async with pool.acquire() as conn:
-            #yield conn
+        # Tima's changes 26.05 4:30
+        if self.pool is None:
+            self.pool = await aiopg.create_pool(dsn=self.get_dsn())
+
+        async with (await self.pool) as conn:
+            async with pool.acquire() as conn:
+                yield conn
 
 
 @asynccontextmanager
