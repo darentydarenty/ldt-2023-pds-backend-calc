@@ -24,7 +24,7 @@ class CompanyData(BaseModel):
     machine_names:      list | None
     machine_quantities: list | None
     patent_type:        int | None
-    bookkeeping:        int | None
+    bookkeeping:        bool | None
     tax_system:         str | None
     operations:         int | None
     other_needs:        list | None
@@ -100,15 +100,11 @@ class OutputData(BaseModel):
     tax: TaxCategory
 
 
-class InputData(BaseModel):
-    __root__: CompanyData
-
-
 class ReportResult(BaseModel):
     tracker_id: str
     total_expenses: int
     output: OutputData
-    input: InputData
+    input: CompanyData
 
 
 class ReportDAO(BaseModel):
