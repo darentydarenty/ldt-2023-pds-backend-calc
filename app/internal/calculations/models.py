@@ -15,8 +15,8 @@ class CompanyData(BaseModel):
     project_name:       str | None
     organization_type:  str | None
     workers_quantity:   int | None
-    industry:           int | None
-    county:             int | None
+    industry:           str | None
+    county:             str | None
 
     # company_full
     land_area:          int | None
