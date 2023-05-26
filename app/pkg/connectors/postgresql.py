@@ -60,12 +60,20 @@ class Postgresql(BaseConnector):
         Yields:
             ``aiopg.Connection instance`` in asynchronous context manager.
         """
-        if self.pool is None:
-            self.pool = await aiopg.create_pool(dsn=self.get_dsn())
+        # my code
+        async with aiopg.connect(dsn=self.get_dsn()) as listenConn:
+        async with aiopg.create_pool(dsn=self.get_dsn()) as notifyPool:
+            async with notifyPool.acquire() as conn:
+                yield conn
+        
+        
+        # Tima's changes 26.05 4:30
+        #if self.pool is None:
+            #self.pool = await aiopg.create_pool(dsn=self.get_dsn())
 
-        async with (await self.pool) as conn:
+        #async with (await self.pool) as conn:
             # async with pool.acquire() as conn:
-            yield conn
+            #yield conn
 
 
 @asynccontextmanager
