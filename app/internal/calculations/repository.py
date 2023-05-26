@@ -283,8 +283,8 @@ class CalculationsRepository:
                     income_tax)
                 VALUES (
                     %(record_id)s, %(tax_expenses)s,
-                    %(land_expenses)s, %(estate_expenses)s,
-                    %(income_expenses)s
+                    %(land_tax)s, %(estate_tax)s,
+                    %(income_tax)s
                 )
                 """
         async with get_connection(self.__db) as cur:
