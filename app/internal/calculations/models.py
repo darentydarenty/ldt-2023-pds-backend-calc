@@ -12,22 +12,22 @@ class ReportData(BaseModel):
 
 class CompanyData(BaseModel):
     # company_short
-    project_name:       str | None
-    organization_type:  str | None
-    workers_quantity:   int | None
-    industry:           str | None
-    county:             str | None
+    project_name: str | None
+    organization_type: str | None
+    workers_quantity: int | None
+    industry: str | None
+    county: str | None
 
     # company_full
-    land_area:          int | None
-    building_area:      int | None
-    machine_names:      list | None
+    land_area: int | None
+    building_area: int | None
+    machine_names: list | None
     machine_quantities: list | None
-    patent_type:        int | None
-    bookkeeping:        bool | None
-    tax_system:         str | None
-    operations:         int | None
-    other_needs:        list | None
+    patent_type: str | None
+    bookkeeping: bool | None
+    tax_system: str | None
+    operations: int | None
+    other_needs: list | None
 
 
 class CompanyPredict(BaseModel):
@@ -107,8 +107,38 @@ class ReportResult(BaseModel):
     input: CompanyData
 
 
-class ReportDAO(BaseModel):
+class CalculationRequest(BaseModel):
+    user_id: int | None
+    company: CompanyData
 
+
+class CompanyShortDAO(BaseModel):
+    record_id: int
+
+    user_id: int | None
+
+    project_name: str | None
+    organization_type: str | None
+    workers_quantity: int | None
+    industry: str | None
+    county: str | None
+
+
+class CompanyFullDAO(BaseModel):
+    record_id: int
+
+    land_area: int | None
+    building_area: int | None
+    machine_names: list | None
+    machine_quantities: list | None
+    patent_type: str | None
+    bookkeeping: bool | None
+    tax_system: str | None
+    operations: int | None
+    other_needs: list | None
+
+
+class ReportDAO(BaseModel):
     # base
     tracker_id: str
     total_expenses: int

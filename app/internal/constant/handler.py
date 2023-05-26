@@ -16,7 +16,6 @@ class ConstantHandler:
         self.router.add_api_route("/industries", self.get_industries)
 
     async def get(self):
-
         return await self.__const_uc._async_get_data()
 
 

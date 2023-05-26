@@ -1,8 +1,4 @@
-from copy import deepcopy
-
-from aiopg import Connection
-from psycopg2.extras import RealDictCursor
-from pydantic import BaseModel
+from .models import *
 
 from app.internal.calculations.models import ReportDAO, ReportByTrackerCmd
 from app.pkg.connectors import Postgresql
@@ -68,7 +64,6 @@ class CalculationsRepository:
                 """
 
         async with get_connection(self.__db) as cur:
-
             await cur.execute(query, (tracker_id,))
 
             data = await cur.fetchone()
@@ -130,13 +125,99 @@ class CalculationsRepository:
             if user_id is None:
                 await cur.execute(query)
             else:
-                await cur.execute(query, (user_id, ))
+                await cur.execute(query, (user_id,))
             data = await cur.fetchall()
 
             return [ReportDAO(**r) for r in data]
 
-    async def create_first_report(self):
-        pass
+    async def insert_record_raw(self,
+                                tracker_id: str,
+                                report_name: str) -> int:
+        query = """
+                INSERT INTO
+                    calcs.result
+                    (tracker_id, total_expenses, date_create, report_name) 
+                VALUES 
+                    (%s, DEFAULT, DEFAULT, %s)
+                RETURNING record_id;
+                """
+
+        async with get_connection(self.__db) as cur:
+            await cur.execute(query, (tracker_id, report_name))
+            data = await cur.fetchone()
+            return int(data["record_id"])
+
+    async def insert_company_info(self,
+                                  company_full: CompanyFullDAO,
+                                  company_short: CompanyShortDAO):
+        queries = {
+            """
+            INSERT INTO
+                calcs.company_short
+                (record_id, user_id, project_name, industry, organization_type, workers_quantity, county)
+                
+            VALUES
+                (%(record_id)s, %(user_id)s, %(project_name)s,
+                 (SELECT
+                    industry_id
+                FROM constant.mean_salaries
+                WHERE industry_name = %(industry)s),
+                 
+                 %(organisation_type)s,
+                 %(workers_quantity)s,
+                 (
+                 SELECT
+                    county_id
+                FROM
+                    constant.county_prices
+                WHERE
+                    county_name = %(county)s)
+                );
+                 
+            """: company_short.dict(),
+            """
+            INSERT INTO
+                calcs.company_full
+                (record_id, land_area,
+                building_area, machine_names,
+                machine_quantities, patent_type,
+                bookkeeping, tax_system,
+                operations, other_needs)
+                VALUES 
+                (
+                %(record_id)s, %(land_area)s,
+                %(building_area)s, array(
+                        SELECT
+                            machine_id
+                        FROM
+                            constant.machine_prices
+                        WHERE
+                            machine_name = ANY(%(machine_names)s)
+                    ),
+                %(machine_quantities)s, (
+                    SELECT 
+                        patent_id
+                    FROM 
+                        constant.patent_prices
+                    WHERE
+                        patent_name = %(patent_type)s
+                    ),
+                %(bookkeeping)s, %(tax_system)s,
+                %(operations)s, array(
+                        SELECT
+                            need_id
+                        FROM
+                            constant.other_needs
+                        WHERE
+                            need_name = ANY(%(other_needs)s)
+                    )
+                )
+            """: company_full.dict()
+        }
+
+        async with get_connection(self.__db) as cur:
+            for query, param in queries.items():
+                await cur.execute(query, param)
 
     async def update_report(self):
         pass

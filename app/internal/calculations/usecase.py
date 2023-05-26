@@ -1,3 +1,6 @@
+import datetime
+import uuid
+
 from asgiref.sync import async_to_sync
 
 from .expense_model import ExpensesModel
@@ -66,8 +69,41 @@ class CalculationsUseCase:
         self._calc_repo = calc_repo
         self._exp_model = ExpensesModel(model_data)
 
-    def calculate(self):
-        pass
+    async def calculate(self, params: CalculationRequest):
+        tracker_id = str(uuid.uuid4())
+        record_id = await self._calc_repo.insert_record_raw(
+            tracker_id=tracker_id,
+            report_name=f"Отчёт {datetime.datetime.now().strftime('YYYY-MM-ddTHH:mm:ss')}",
+        )
+
+        await self._calc_repo.insert_company_info(
+            company_full=CompanyFullDAO(
+                record_id=record_id,
+
+                land_area=params.company.land_area,
+                building_area=params.company.building_area,
+                machine_names=params.company.machine_names,
+                machine_quantities=params.company.machine_quantities,
+                patent_type=params.company.patent_type,
+                bookkeeping=params.company.bookkeeping,
+                tax_system=params.company.tax_system,
+                operations=params.company.operations,
+                other_needs=params.company.other_needs,
+            ),
+            company_short=CompanyShortDAO(
+                record_id=record_id,
+                user_id=params.user_id,
+
+                project_name=params.company.project_name,
+                organisation_type=params.company.organization_type,
+                workers_quantity=params.company.workers_quantity,
+                industry=params.company.industry,
+                county=params.company.county,
+            )
+        )
+
+
+
 
     async def get_report_by_tracker_id(self, tracker_id: str) -> ReportResult:
         result = await self._calc_repo.get_report_by_tracker_id(tracker_id)
