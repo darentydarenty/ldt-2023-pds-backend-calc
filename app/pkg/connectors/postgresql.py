@@ -63,7 +63,7 @@ class Postgresql(BaseConnector):
         if self.pool is None:
             self.pool = await aiopg.create_pool(dsn=self.get_dsn())
 
-        async with aiopg.create_pool(dsn=self.get_dsn()) as pool:
+        async with (await self.pool()) as pool:
             async with pool.acquire() as conn:
                 yield conn
 

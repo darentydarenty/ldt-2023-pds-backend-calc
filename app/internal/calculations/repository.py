@@ -79,7 +79,6 @@ class CalculationsRepository:
     async def get_all_reports(self) -> list[ReportDAO]:
         query = """
                 SELECT
-                    faf
                     res.tracker_id,
                     res.total_expenses, res.date_create, res.report_name,
                     
