@@ -246,3 +246,14 @@ class ReportDAO(BaseModel):
 
 class ReportByTrackerCmd(BaseModel):
     tracker_id: str
+
+
+class ReportListUnit(BaseModel):
+    name: str
+    summary: int
+    time_stamp: datetime.datetime
+    report_id: str
+
+
+class ReportList(BaseModel):
+    results: list[ReportListUnit]

@@ -62,6 +62,15 @@ def convert_report(result: ReportDAO) -> ReportResult:
     )
 
 
+def convert_report_digest(result: ReportDAO) -> ReportListUnit:
+    return ReportListUnit(
+        name=result.report_name,
+        summary=result.total_expenses,
+        time_stamp=result.date_create,
+        report_id=result.tracker_id
+    )
+
+
 class CalculationsUseCase:
     _calc_repo: CalculationsRepository
     _exp_model: ExpensesModel
@@ -161,15 +170,16 @@ class CalculationsUseCase:
 
         return await self.get_report_by_tracker_id(tracker_id)
 
-
-
-
     async def get_report_by_tracker_id(self, tracker_id: str) -> ReportResult:
         result = await self._calc_repo.get_report_by_tracker_id(tracker_id)
 
         return convert_report(result)
 
-    async def get_all_reports(self, user_id: int | None = None) -> list[ReportResult]:
+    async def get_all_reports(self, user_id: int | None = None) -> ReportList:
         result = await self._calc_repo.get_all_reports(user_id)
 
-        return [convert_report(r) for r in result]
+        report_list = [convert_report_digest(r) for r in result]
+
+        return ReportList(
+            results=report_list,
+        )
