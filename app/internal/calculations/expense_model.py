@@ -89,7 +89,7 @@ class ExpensesModel:
         data = _check_machines(data)
         data['organization_type'] = _check_additive_value(data['organization_type'])
         data['workers_quantity'] = _check_additive_value(data['workers_quantity'])
-        data['industry'] = 'Прочие отрасли' if data['industry'] is None else data['industry']
+        data['industry'] = 26 if data['industry'] is None else data['industry']
         data['county'] = 'mean' if data['county'] is None else data['county']
         data['land_area'] = _check_additive_value(data['land_area'])
         data['building_area'] = _check_additive_value(data['building_area'])
