@@ -47,7 +47,10 @@ class ConstantUseCase:
         )
 
     async def get_fields(self):
-        pass
+        result = await self.__const_repo.get_fields()
+        return {
+            "data": result
+        }
 
     def get_data(self) -> ModelData:
         return self._data

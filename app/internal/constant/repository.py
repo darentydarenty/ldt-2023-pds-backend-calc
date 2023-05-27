@@ -39,28 +39,29 @@ class ConstantRepository:
 
         return result
 
-    async def get_fields(self) -> list[str]:
+    async def get_fields(self) -> dict[str, list[str]]:
         queries = {
             """
-            SELECT county_name FROM constant.county_prices;
-            """,
-            """
             SELECT machine_name FROM constant.machine_prices;
-            """,
+            """: ["machine_name", "machines"],
             """
             SELECT industry_name FROM constant.mean_salaries;
-            """,
+            """: ["industry_name", "industries"],
             """
             SELECT need_name FROM constant.other_needs;
-            """,
+            """: ["need_name", "needs"],
             """
             SELECT patent_name FROM constant.patent_prices;
-            """
+            """: ["patent_name", "patents"],
         }
-
+        result = {}
         async with get_connection(self.__db) as cur:
-            for query in queries:
+            for query, key in queries:
                 await cur.execute(query)
+                data = await cur.fetchall()
+                result[key[1]] = [v[key[0]] for v in data]
+
+            return result
 
     async def get_industries(self) -> list[str]:
         query = """
@@ -126,4 +127,3 @@ class ConstantRepository:
             result = await cur.fetchall()
 
             return [PatentPricesDAO(**r) for r in result]
-
