@@ -56,7 +56,7 @@ class ConstantRepository:
         }
         result = {}
         async with get_connection(self.__db) as cur:
-            for query, key in queries:
+            for query, key in queries.items():
                 await cur.execute(query)
                 data = await cur.fetchall()
                 result[key[1]] = [v[key[0]] for v in data]
