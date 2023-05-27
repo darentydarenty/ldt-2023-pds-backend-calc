@@ -32,22 +32,22 @@ class CompanyData(BaseModel):
 
 class ModelCompanyData(BaseModel):
     # company_short
-    project_name: str
-    organization_type: str
-    workers_quantity: int
-    industry: int
-    county: int
+    project_name: str | None
+    organization_type: str | None
+    workers_quantity: int | None
+    industry: int | None
+    county: int | None
 
     # company_full
-    land_area: int
-    building_area: int
-    machine_names: list[int]
-    machine_quantities: list[int]
-    patent_type: int
-    bookkeeping: int
-    tax_system: str
-    operations: int
-    other_needs: list[int]
+    land_area: int | None
+    building_area: int | None
+    machine_names: list[int] | None
+    machine_quantities: list[int] | None
+    patent_type: int | None
+    bookkeeping: int | None
+    tax_system: str | None
+    operations: int | None
+    other_needs: list[int] | None
 
 
 class StaffExpenses(BaseModel):
