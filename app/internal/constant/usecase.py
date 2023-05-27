@@ -46,5 +46,8 @@ class ConstantUseCase:
             industries=result
         )
 
+    async def get_fields(self):
+        pass
+
     def get_data(self) -> ModelData:
         return self._data

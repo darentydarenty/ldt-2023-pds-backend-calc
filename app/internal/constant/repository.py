@@ -39,6 +39,29 @@ class ConstantRepository:
 
         return result
 
+    async def get_fields(self) -> list[str]:
+        queries = {
+            """
+            SELECT county_name FROM constant.county_prices;
+            """,
+            """
+            SELECT machine_name FROM constant.machine_prices;
+            """,
+            """
+            SELECT industry_name FROM constant.mean_salaries;
+            """,
+            """
+            SELECT need_name FROM constant.other_needs;
+            """,
+            """
+            SELECT patent_name FROM constant.patent_prices;
+            """
+        }
+
+        async with get_connection(self.__db) as cur:
+            for query in queries:
+                await cur.execute(query)
+
     async def get_industries(self) -> list[str]:
         query = """
                 SELECT industry_name FROM constant.mean_salaries;

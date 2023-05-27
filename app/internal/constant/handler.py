@@ -1,3 +1,5 @@
+import asyncio
+
 import fastapi.routing
 
 from app.internal.constant.usecase import ConstantUseCase
@@ -18,7 +20,7 @@ class ConstantHandler:
     async def get(self):
         return await self.__const_uc._async_get_data()
 
-
     async def get_industries(self):
 
         return await self.__const_uc.get_industries()
+
