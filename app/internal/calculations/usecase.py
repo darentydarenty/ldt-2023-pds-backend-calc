@@ -183,7 +183,7 @@ class CalculationsUseCase:
     async def get_insights(self, tracker_id) -> InsightsData:
         companies = await self._calc_repo.get_reports_for_model()
         input_company = await self._calc_repo.get_company_for_model(tracker_id)
-        insight_model = InsightsModel(self._model_data, CompaniesData(companies))
+        insight_model = InsightsModel(self._model_data, CompaniesData(companies_data=companies))
         return insight_model.make_insights(input_company)
 
     async def get_report_by_tracker_id(self, tracker_id: str) -> ReportResult:
