@@ -86,23 +86,24 @@ class InsightsModel(AnalyzingModel):
             best_counties = self.companies_data_df[self.companies_data_df['industry'] == temp_company_data['industry']][
                 'county'].value_counts().to_dict()
             best_counties = sorted(best_counties, key=best_counties.get, reverse=True)[:3]  # top 3
-            best_counties_price = [self.CountyPrices[i] for i in best_counties]
-            current_county = company_data.dict()['county']
-            current_county = 'mean' if current_county is None else current_county
-            current_county_price = self.CountyPrices[current_county]
-            best_county_ind = best_counties_price.index(min(best_counties_price))
-            mean_best_counties_price = sum(best_counties_price) / len(best_counties_price)
-            if (current_county in best_counties) and (current_county_price < mean_best_counties_price):
-                usual_county_insight = 'Вы выбрали оптимальный административный округ для такого предприятия'
-            elif (current_county in best_counties):
-                usual_county_insight = f'Расположение вашего предприятия популярно в отрасли, другим популярным административным округом является {self.CountyID[best_counties[best_county_ind]]}, где стоимость земли меньше на {int((current_county_price - best_counties_price[best_county_ind]) / (current_county_price * 0.01))}%'
-            elif (current_county_price < mean_best_counties_price):
-                county_str = ', '.join([self.CountyID[i] for i in best_counties])
-                usual_county_insight = 'Расположение вашего предприятия непопулярно в отрасли, обычно предприятия располагаются в ' + county_str + f', где стоимость земли больше на {int((mean_best_counties_price - current_county_price) / (current_county_price * 0.01))}%'
-            else:
-                county_str = ', '.join([self.CountyID[i] for i in best_counties])
-                usual_county_insight = 'Расположение вашего предприятия непопулярно в отрасли, обычно предприятия располагаются в ' + county_str + f', где стоимость земли меньше на {int((current_county_price - mean_best_counties_price) / (current_county_price * 0.01))}%'
-            usual_county_insight = {'insight': usual_county_insight}
+            if len(best_counties) > 0:
+                best_counties_price = [self.CountyPrices[i] for i in best_counties]
+                current_county = company_data.dict()['county']
+                current_county = 'mean' if current_county is None else current_county
+                current_county_price = self.CountyPrices[current_county]
+                best_county_ind = best_counties_price.index(min(best_counties_price))
+                mean_best_counties_price = sum(best_counties_price) / len(best_counties_price)
+                if (current_county in best_counties) and (current_county_price < mean_best_counties_price):
+                    usual_county_insight = 'Вы выбрали оптимальный административный округ для такого предприятия'
+                elif (current_county in best_counties):
+                    usual_county_insight = f'Расположение вашего предприятия популярно в отрасли, другим популярным административным округом является {self.CountyID[best_counties[best_county_ind]]}, где стоимость земли меньше на {int((current_county_price - best_counties_price[best_county_ind]) / (current_county_price * 0.01))}%'
+                elif (current_county_price < mean_best_counties_price):
+                    county_str = ', '.join([self.CountyID[i] for i in best_counties])
+                    usual_county_insight = 'Расположение вашего предприятия непопулярно в отрасли, обычно предприятия располагаются в ' + county_str + f', где стоимость земли больше на {int((mean_best_counties_price - current_county_price) / (current_county_price * 0.01))}%'
+                else:
+                    county_str = ', '.join([self.CountyID[i] for i in best_counties])
+                    usual_county_insight = 'Расположение вашего предприятия непопулярно в отрасли, обычно предприятия располагаются в ' + county_str + f', где стоимость земли меньше на {int((current_county_price - mean_best_counties_price) / (current_county_price * 0.01))}%'
+                usual_county_insight = {'insight': usual_county_insight}
 
         output = {
             'usual_expenses_insight': Insight(**usual_expenses_insight),
