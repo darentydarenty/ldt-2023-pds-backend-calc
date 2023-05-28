@@ -130,6 +130,59 @@ class CalculationsRepository:
 
             return [ReportDAO(**r) for r in data]
 
+    async def get_company_for_model(self, tracker_id: str) -> ModelCompanyData:
+        query = """
+                SELECT
+                    cf.*, cs.*
+                FROM
+                    calcs.result r
+                JOIN calcs.company_full cf on r.record_id = cf.record_id
+                JOIN calcs.company_short cs on r.record_id = cs.record_id
+                WHERE
+                    r.tracker_id = %s;
+                """
+        async with get_connection(self.__db) as cur:
+            await cur.execute(query, (tracker_id,))
+            data = await cur.fetchone()
+            return ModelCompanyData(**data)
+
+    async def get_reports_for_model(self) -> list[ModelReportDAO]:
+        query = """
+                SELECT
+                    
+                    res.tracker_id,
+                    res.total_expenses, res.date_create, res.report_name,
+                    
+                    st.salaries_expenses, st.medical_expenses, st.pension_expenses, st.staff_expenses,
+                    
+                    e.building_expenses, e.estate_expenses, e.land_expenses,
+                    
+                    s.bookkeeping_expenses, s.duty_expenses, s.machine_expenses, s.patent_expenses, s.service_expenses,
+                    
+                    t.estate_tax, t.income_tax, t.land_tax, t.tax_expenses,
+                    cf.other_needs,
+                     
+                    cf.bookkeeping, cf.building_area, cf.land_area, cf.machine_names,
+                    cf.machine_quantities, cf.operations, cf.patent_type, cf.tax_system,
+                    
+                   cs.county, cs.industry,
+                   cs.organization_type, cs.project_name, cs.workers_quantity
+                FROM
+                    calcs.result res
+                    
+                LEFT JOIN calcs.estate e on res.record_id = e.record_id
+                LEFT JOIN calcs.company_full cf on res.record_id = cf.record_id
+                LEFT JOIN calcs.company_short cs on res.record_id = cs.record_id
+                LEFT JOIN calcs.services s on res.record_id = s.record_id
+                LEFT JOIN calcs.staff st on res.record_id = st.record_id
+                LEFT JOIN calcs.taxes t on res.record_id = t.record_id;
+                """
+
+        async with get_connection(self.__db) as cur:
+            await cur.execute(query)
+            data = await cur.fetchall()
+            return [ModelReportDAO(**r) for r in data]
+
     async def insert_record_raw(self,
                                 tracker_id: str,
                                 report_name: str) -> int:

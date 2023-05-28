@@ -5,6 +5,8 @@ import uuid
 from asgiref.sync import async_to_sync
 
 from .expense_model import ExpensesModel
+from .graph_model import GraphsModel
+from .insight_model import InsightsModel
 from .repository import CalculationsRepository
 from .models import *
 
@@ -73,10 +75,12 @@ def convert_report_digest(result: ReportDAO) -> ReportListUnit:
 
 class CalculationsUseCase:
     _calc_repo: CalculationsRepository
+    _model_data: ModelData
     _exp_model: ExpensesModel
 
     def __init__(self, calc_repo: CalculationsRepository, model_data: ModelData):
         self._calc_repo = calc_repo
+        self._model_data = model_data
         self._exp_model = ExpensesModel(model_data)
 
     async def calculate(self, params: CalculationRequest) -> ReportResult:
@@ -169,6 +173,18 @@ class CalculationsUseCase:
         )
 
         return await self.get_report_by_tracker_id(tracker_id)
+
+    async def get_plots(self, tracker_id: str) -> GraphsData:
+        companies = await self._calc_repo.get_reports_for_model()
+        input_company = await self._calc_repo.get_company_for_model(tracker_id)
+        graph_model = GraphsModel(self._model_data, CompaniesData(companies_data=companies))
+        return graph_model.make_graphs(input_company)
+
+    async def get_insights(self, tracker_id) -> InsightsData:
+        companies = await self._calc_repo.get_reports_for_model()
+        input_company = await self._calc_repo.get_company_for_model(tracker_id)
+        insight_model = InsightsModel(self._model_data, CompaniesData(companies))
+        return insight_model.make_insights(input_company)
 
     async def get_report_by_tracker_id(self, tracker_id: str) -> ReportResult:
         result = await self._calc_repo.get_report_by_tracker_id(tracker_id)

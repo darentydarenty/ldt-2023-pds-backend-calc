@@ -23,6 +23,12 @@ class CalculationsHandler:
         self.router.add_api_route("/create",
                                   self.make_calculation,
                                   methods=["POST"])
+        self.router.add_api_route("/insights",
+                                  self.get_insights,
+                                  methods=["GET"])
+        self.router.add_api_route("/plots",
+                                  self.get_plots,
+                                  methods=["GET"])
 
     async def get_report_by_tracker_id(self, tracker_id: str) -> ReportResult:
         return await self._calc_uc.get_report_by_tracker_id(tracker_id)
@@ -32,4 +38,10 @@ class CalculationsHandler:
 
     async def make_calculation(self, params: CalculationRequest):
         return await self._calc_uc.calculate(params)
+
+    async def get_insights(self, tracker_id: str) -> InsightsData:
+        return await self._calc_uc.get_insights(tracker_id)
+
+    async def get_plots(self, tracker_id: str) -> GraphsData:
+        return await self._calc_uc.get_plots(tracker_id)
 

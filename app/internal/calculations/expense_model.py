@@ -11,12 +11,6 @@ class ExpensesModel:
 
     def __init__(self, ModelConstants: ModelData) -> None:
         """Constructor"""
-        self.PatentPrices = None
-        self.NeedsCoeffs = None
-        self.MachinePrices = None
-        self.MeanSalaries = None
-        self.CountyPrices = None
-
         self.duty_charge = {'ООО': 4000, 'ИП': 800}  # пошлина
         self.pred_duration = 12  # длительность предсказания в месяцах
         self.pension_coeff = 0.22
@@ -38,12 +32,14 @@ class ExpensesModel:
         self.NeedsCoeffs = {item['need_id']: item.pop('need_coeff') for item in dictionary['other_needs']}
         self.PatentPrices = {item['patent_id']: item.pop('patent_price') for item in dictionary['patent_prices']}
 
+        self.IndustryID = {item['industry_id']: item.pop('industry_name') for item in dictionary['mean_salaries']}
+        self.PatentID = {item['patent_id']: item.pop('patent_name') for item in dictionary['patent_prices']}
+
         land_costs = list(self.CountyPrices.values())
         try:
             self.CountyPrices['mean'] = np.round(sum(land_costs) / len(land_costs), 2)
         except ZeroDivisionError:
             self.CountyPrices['mean'] = 0
-
         machine_costs = list(self.MachinePrices.values())
         try:
             self.MachinePrices['mean'] = int(sum(machine_costs) / len(machine_costs))
@@ -87,25 +83,28 @@ class ExpensesModel:
             return data
 
         data = _check_machines(data)
-        data['organization_type'] = _check_additive_value(data['organization_type'])
+        data['organization_type'] = 'ООО' if data['organization_type'] is None else data['organization_type']
         data['workers_quantity'] = _check_additive_value(data['workers_quantity'])
-        data['industry'] = 26 if data['industry'] is None else data['industry']
+        data['industry'] = list(self.IndustryID.keys())[list(self.IndustryID.values()).index('Прочие отрасли')] if data[
+                                                                                                                       'industry'] is None else \
+        data['industry']
         data['county'] = 'mean' if data['county'] is None else data['county']
         data['land_area'] = _check_additive_value(data['land_area'])
         data['building_area'] = _check_additive_value(data['building_area'])
         data['machine_names'] = [('mean' if machine is None else machine) for machine in data['machine_names']]
         data['machine_quantities'] = [(0 if value is None else value) for value in data['machine_quantities']]
-        data['patent_type'] = _check_additive_value(data['patent_type'])
+        data['patent_type'] = list(self.PatentID.keys())[list(self.PatentID.values()).index('Без патента')] if data[
+                                                                                                                   'patent_type'] is None else \
+        data['patent_type']
         data['bookkeeping'] = _check_additive_value(data['bookkeeping'])
         data['tax_system'] = 'ОСН' if data['tax_system'] is None else data['tax_system']
         data['operations'] = _check_additive_value(data['operations'])
-        data['other_needs'] = 0.5 if data['other_needs'] is None else data['other_needs']
+        data['other_needs'] = [] if data['other_needs'] is None else data['other_needs']
         return data
 
     def predict_dict(self, company_data: dict) -> dict:
         """Get prediction with detalization"""
         company_data = self._check_dictionary(company_data)
-
         DutyCharge = self.duty_charge[company_data['organization_type']]
         Salaries = self.MeanSalaries[company_data['industry']] * company_data['workers_quantity'] * self.pred_duration
         PensionExpenses = Salaries * self.pension_coeff
@@ -119,7 +118,8 @@ class ExpensesModel:
         PatentExpenses = self.PatentPrices[company_data['patent_type']]
         BookKeepingExpenses = self.pred_duration * self._bookkeeping_formula(company_data['workers_quantity'],
                                                                              company_data['operations'],
-                                                                             company_data['tax_system']) if company_data['bookkeeping'] else 0
+                                                                             company_data['tax_system']) if \
+        company_data['bookkeeping'] else 0
         LandTax = LandExpenses * self.land_coeff if company_data['tax_system'] != 'ЕСНХ' else 0
         BuildingTax = BuildingExpenses * self.building_coeff
         IncomeTax = Salaries * self.income_coeff if company_data['tax_system'] == 'ОСН' or company_data[
