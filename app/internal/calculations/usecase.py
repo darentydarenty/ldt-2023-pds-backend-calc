@@ -28,7 +28,7 @@ def convert_report(result: ReportDAO) -> ReportResult:
             building_area=result.building_area,
             machine_names=result.machine_names,
             machine_quantities=result.machine_quantities,
-            patent_type=result.patent_type,
+            patent_type=result.patent_name,
             bookkeeping=result.bookkeeping,
             tax_system=result.tax_system,
             operations=result.operations,
