@@ -24,7 +24,7 @@ class InsightsModel(AnalyzingModel):
         best_total_expenses = current_total_expenses = company_predict['total_expenses']
         for tax_system in [i for i in self.tax_systems if i != current_tax_system]:
             temp_company_data['tax_system'] = tax_system
-            total_expenses = model.predict(CompanyData(**temp_company_data)).dict()['total_expenses']
+            total_expenses = model.predict(ModelCompanyData(**temp_company_data)).dict()['total_expenses']
             if total_expenses < best_total_expenses:
                 best_total_expenses = total_expenses
                 best_tax_system = tax_system

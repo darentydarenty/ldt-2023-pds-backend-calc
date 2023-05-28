@@ -62,7 +62,6 @@ class ExpensesModel:
         return employees * 500 + np.sqrt(operations * mul_coeff[tax_system]) + add_coeff[tax_system]
 
     def _check_dictionary(self, data):
-        print('check start',data)
         def _check_additive_value(value):
             if value is None:
                 return 0
@@ -87,7 +86,6 @@ class ExpensesModel:
         data['organization_type'] = 'ООО' if data['organization_type'] is None else data['organization_type']
         data['workers_quantity'] = _check_additive_value(data['workers_quantity'])
         data['industry'] = list(self.IndustryID.keys())[list(self.IndustryID.values()).index(26)] if data['industry'] is None else data['industry']
-        print('after industry', data)
         data['county'] = 'mean' if data['county'] is None else data['county']
         data['land_area'] = _check_additive_value(data['land_area'])
         data['building_area'] = _check_additive_value(data['building_area'])
@@ -104,9 +102,7 @@ class ExpensesModel:
 
     def predict_dict(self, company_data: dict) -> dict:
         """Get prediction with detalization"""
-        print('pre-dictionary', company_data)
         company_data = self._check_dictionary(company_data)
-        print('after-dictionary', company_data)
         DutyCharge = self.duty_charge[company_data['organization_type']]
         Salaries = self.MeanSalaries[company_data['industry']] * company_data['workers_quantity'] * self.pred_duration
         PensionExpenses = Salaries * self.pension_coeff
