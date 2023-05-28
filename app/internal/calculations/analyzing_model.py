@@ -61,6 +61,7 @@ class AnalyzingModel:
                 ['industry', 'month']].value_counts(sort=False).to_dict().items()
             self.popularity_matrix = np.zeros(shape=(max_industry + 1, max_month + 1))
             for (ind, value) in popularity_items:
-                self.popularity_matrix[*ind] = value
+                print(ind)
+                self.popularity_matrix[ind] = value
         except AttributeError:
             self.popularity_matrix = np.zeros(shape=(1, 1))
