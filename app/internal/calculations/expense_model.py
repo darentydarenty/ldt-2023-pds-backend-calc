@@ -86,7 +86,7 @@ class ExpensesModel:
         data = _check_machines(data)
         data['organization_type'] = 'ООО' if data['organization_type'] is None else data['organization_type']
         data['workers_quantity'] = _check_additive_value(data['workers_quantity'])
-        data['industry'] = list(self.IndustryID.keys())[list(self.IndustryID.values()).index('Прочие отрасли')] if data[
+        data['industry'] = list(self.IndustryID.keys())[list(self.IndustryID.values()).index(26)] if data[
                                                                                                                        'industry'] is None else \
         data['industry']
         data['county'] = 'mean' if data['county'] is None else data['county']
