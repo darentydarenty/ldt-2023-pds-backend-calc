@@ -39,6 +39,49 @@ class ConstantRepository:
 
         return result
 
+    async def update_constant(self, params: UpdateConstantUnit):
+        queries = {
+            "county_prices": """
+            UPDATE constant.county_prices SET county_price = %s WHERE county_name = %s;
+                    """,
+            "machine_prices": """
+            UPDATE constant.machine_prices SET machine_price = %s WHERE machine_name = %s;
+                    """,
+            "mean_salaries": """
+            UPDATE constant.mean_salaries SET salary = %s WHERE industry_name = %s;
+                    """,
+            "other_needs": """
+            UPDATE constant.other_needs SET need_coeff = %s WHERE need_name = %s;
+                    """,
+            "patent_prices": """
+            UPDATE constant.patent_prices SET patent_price = %s WHERE patent_name = %s;
+                    """
+        }
+
+        async with get_connection(self.__db) as cur:
+            await cur.execute(queries[params.category], (params.value, params.name))
+
+    async def insert_constant(self, params: UpdateConstantUnit):
+        queries = {
+            "county_prices": """
+            INSERT INTO constant.county_prices(county_name, county_price) VALUES (%s, %s);
+            """,
+            "machine_prices": """
+            INSERT INTO constant.machine_prices(machine_name, machine_price) VALUES (%s, %s);
+            """,
+            "mean_salaries": """
+            INSERT INTO constant.mean_salaries(industry_name, salary) VALUES (%s, %s);
+            """,
+            "other_needs": """
+            INSERT INTO constant.other_needs(need_name, need_coeff) VALUES (%s, %s);
+            """,
+            "patent_prices": """
+            INSERT INTO constant.patent_prices(patent_name, patent_price) VALUES (%s, %s);
+            """
+        }
+        async with get_connection(self.__db) as cur:
+            await cur.execute(queries[params.category], (params.name, params.value))
+
     async def get_fields(self) -> dict[str, list[str]]:
         queries = {
             """

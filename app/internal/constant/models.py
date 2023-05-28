@@ -1,3 +1,5 @@
+import typing
+
 from pydantic import BaseModel
 
 
@@ -42,3 +44,12 @@ class ModelData(BaseModel):
 class IndustriesResponse(BaseModel):
     industries: list[str]
 
+
+class UpdateConstantUnit(BaseModel):
+    name: str
+    value: typing.Any
+    category: str
+
+
+class UpdateConstantsRequest(BaseModel):
+    elements: list[UpdateConstantUnit]

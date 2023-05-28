@@ -52,5 +52,13 @@ class ConstantUseCase:
             "data": result
         }
 
+    async def update_constants(self, params: UpdateConstantsRequest):
+        for e in params.elements:
+            await self.__const_repo.update_constant(e)
+
+    async def insert_constants(self, params: UpdateConstantsRequest):
+        for e in params.elements:
+            await self.__const_repo.insert_constant(e)
+
     def get_data(self) -> ModelData:
         return self._data
