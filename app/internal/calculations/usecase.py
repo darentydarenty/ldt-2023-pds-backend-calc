@@ -201,7 +201,7 @@ class CalculationsUseCase:
     async def get_report_by_tracker_id(self, tracker_id: str, first_time: bool = False) -> ReportResult:
         result = await self._calc_repo.get_report_by_tracker_id(tracker_id)
         if not first_time:
-            make_pdf(self._template_path, f"{self._output_path}{result.tracker_id}.pdf")
+            make_pdf(self._template_path, f"{self._output_path}{result.tracker_id}.pdf", result)
 
         return convert_report(result)
 
