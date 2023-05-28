@@ -18,8 +18,8 @@ class ConstantHandler:
         self.router.add_api_route("/", self.get)
         self.router.add_api_route("/industries", self.get_industries)
         self.router.add_api_route("/fields", self.get_fields)
-        self.router.add_api_route("/update", self.update_constants)
-        self.router.add_api_route("/new", self.insert_constants)
+        self.router.add_api_route("/update", self.update_constants, methods=["PATCH"])
+        self.router.add_api_route("/new", self.insert_constants, methods=["POST"])
 
     async def get(self):
         return await self.__const_uc._async_get_data()
