@@ -40,7 +40,7 @@ class CalculationsRepository:
                             constant.machine_prices imp
                         WHERE imp.machine_id = ANY(cf.machine_names)
                     ) as machine_names,
-                    cf.machine_quantities, cf.operations, pp.patent_name, cf.tax_system,
+                    cf.machine_quantities, cf.operations, pp.patent_name as patent_type, cf.tax_system,
                     
                    cp.county_name as county, ms.industry_name as industry,
                    cs.organization_type, cs.project_name, cs.workers_quantity

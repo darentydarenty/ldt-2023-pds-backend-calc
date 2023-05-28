@@ -238,7 +238,7 @@ class ReportDAO(BaseModel):
     building_area: int | None
     machine_names: list[str] | None
     machine_quantities: list[int] | None
-    patent_name: str | None
+    patent_type: str | None
     bookkeeping: bool | None
     tax_system: str | None
     operations: int | None

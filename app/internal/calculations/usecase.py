@@ -11,6 +11,7 @@ from .repository import CalculationsRepository
 from .models import *
 
 from app.internal.constant.models import *
+from app.internal.report.generator import make_pdf
 
 
 def convert_report(result: ReportDAO) -> ReportResult:
@@ -28,7 +29,7 @@ def convert_report(result: ReportDAO) -> ReportResult:
             building_area=result.building_area,
             machine_names=result.machine_names,
             machine_quantities=result.machine_quantities,
-            patent_type=result.patent_name,
+            patent_type=result.patent_type,
             bookkeeping=result.bookkeeping,
             tax_system=result.tax_system,
             operations=result.operations,
@@ -74,14 +75,25 @@ def convert_report_digest(result: ReportDAO) -> ReportListUnit:
 
 
 class CalculationsUseCase:
+
     _calc_repo: CalculationsRepository
     _model_data: ModelData
     _exp_model: ExpensesModel
 
-    def __init__(self, calc_repo: CalculationsRepository, model_data: ModelData):
+    _template_path: str
+    _output_path: str
+
+    def __init__(self,
+                 calc_repo: CalculationsRepository,
+                 model_data: ModelData,
+                 tmp_path: str,
+                 out_path: str
+                 ):
         self._calc_repo = calc_repo
         self._model_data = model_data
         self._exp_model = ExpensesModel(model_data)
+        self._output_path = out_path
+        self._template_path = tmp_path
 
     async def calculate(self, params: CalculationRequest) -> ReportResult:
         tracker_id = str(uuid.uuid4())
@@ -172,7 +184,7 @@ class CalculationsUseCase:
             )
         )
 
-        return await self.get_report_by_tracker_id(tracker_id)
+        return await self.get_report_by_tracker_id(tracker_id, first_time=True if params.user_id is not None else False)
 
     async def get_plots(self, tracker_id: str) -> GraphsData:
         companies = await self._calc_repo.get_reports_for_model()
@@ -186,8 +198,10 @@ class CalculationsUseCase:
         insight_model = InsightsModel(self._model_data, CompaniesData(companies_data=companies))
         return insight_model.make_insights(input_company)
 
-    async def get_report_by_tracker_id(self, tracker_id: str) -> ReportResult:
+    async def get_report_by_tracker_id(self, tracker_id: str, first_time: bool = False) -> ReportResult:
         result = await self._calc_repo.get_report_by_tracker_id(tracker_id)
+        if not first_time:
+            make_pdf(self._template_path, f"{self._output_path}{result.tracker_id}.pdf")
 
         return convert_report(result)
 

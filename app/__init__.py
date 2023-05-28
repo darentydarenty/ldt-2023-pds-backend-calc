@@ -93,8 +93,6 @@ class App:
             self.__settings.FERNET_KEY.get_secret_value()
         )
 
-
-
         self._constant_repo = ConstantRepository(
             postgresql=self._postgresql
         )
@@ -113,6 +111,8 @@ class App:
         self._calc_uc = CalculationsUseCase(
             calc_repo=self._calc_repo,
             model_data=md,
+            tmp_path=self.__settings.TEMPLATE_PATH,
+            out_path=self.__settings.OUTPUT_PATH
         )
         self._calc_handler = CalculationsHandler(calc_uc=self._calc_uc)
 

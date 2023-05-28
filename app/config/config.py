@@ -29,6 +29,9 @@ class Settings(BaseModel):
     OPENAPI_URL: str
     DOCS_URL: str
 
+    TEMPLATE_PATH: str
+    OUTPUT_PATH: str
+
     class Config:
         """Configuration of settings."""
 
