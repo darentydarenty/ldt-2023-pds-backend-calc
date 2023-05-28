@@ -88,6 +88,7 @@ class InsightsModel(AnalyzingModel):
             best_counties = sorted(best_counties, key=best_counties.get, reverse=True)[:3]  # top 3
             best_counties_price = [self.CountyPrices[i] for i in best_counties]
             current_county = company_data.dict()['county']
+            current_county = 'mean' if current_county is None else current_county
             current_county_price = self.CountyPrices[current_county]
             best_county_ind = best_counties_price.index(min(best_counties_price))
             mean_best_counties_price = sum(best_counties_price) / len(best_counties_price)
