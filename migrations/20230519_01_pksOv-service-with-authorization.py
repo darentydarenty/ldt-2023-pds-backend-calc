@@ -7,6 +7,9 @@ from yoyo import step
 __depends__ = {}
 
 steps = [
+    step("""
+        create schema service;
+    """),
     step("""create table service.auth
             (
                 id          serial
@@ -19,5 +22,8 @@ steps = [
                     unique,
                 url         varchar(256)
             );""",
-         "DROP TABLE service.auth")
+         "DROP TABLE service.auth"),
+    step("""
+    """,
+         "")
 ]
