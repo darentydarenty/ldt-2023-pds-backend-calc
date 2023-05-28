@@ -52,10 +52,10 @@ class AnalyzingModel:
             self.companies_data_df = pd.DataFrame(columns=ReportDAOKeys)
         try:
             self.companies_data_df['month'] = self.companies_data_df['date_create'].dt.month
-            max_industry = self.companies_data_df['industry'].max()
-            print(f"max_industry: {max_industry}")
-            max_month = self.companies_data_df['month'].max()
-            print(f"max_month: {max_month}")
+            max_industry = int(self.companies_data_df['industry'].max())
+
+            max_month = int(self.companies_data_df['month'].max())
+
             popularity_items = self.companies_data_df[
                 (self.companies_data_df['date_create'].dt.year == self.companies_data_df['date_create'].dt.year.max())][
                 ['industry', 'month']].value_counts(sort=False).to_dict().items()
