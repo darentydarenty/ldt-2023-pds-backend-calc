@@ -64,7 +64,7 @@ class GraphsModel(AnalyzingModel):
 
         ### График популярности индустрии
         months = {1:'January', 2:'February', 3:'March', 4:'April', 5:'May', 6:'June', 7:'July', 8:'August', 9:'September', 10:'October', 11:'November', 12:'December'}
-        if self.popularity_matrix.shape != (1,1):
+        if self.popularity_matrix.shape != (1,1) or temp_company_data["industry"] is not None:
             most_popular = self.popularity_matrix.sum(axis=1)
             most_popular_idx = np.argsort(most_popular)[::-1][:3].tolist()
             line_dataset = [{self.IndustryID[i]: self.popularity_matrix[i].tolist()[1:]} for i in most_popular_idx if i>0 and i!=temp_company_data['industry']]
