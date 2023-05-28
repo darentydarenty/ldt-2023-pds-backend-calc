@@ -16,6 +16,8 @@ services:
     depends_on:
       - psql_db
       - migrations
+    volumes:
+      - ${OUTPUT_PATH}:${OUTPUT_PATH}
 
     command: [
       "poetry", "run", "uvicorn",
