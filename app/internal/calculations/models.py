@@ -348,7 +348,7 @@ class ModelReportDAO(BaseModel):
     project_name: str | None
     industry: int | None
     organization_type: str | None
-    workers_quantity: int
+    workers_quantity: int | None
     county: int | None
 
 
