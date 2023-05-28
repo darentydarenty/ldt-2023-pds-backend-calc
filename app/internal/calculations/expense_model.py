@@ -155,5 +155,7 @@ class ExpensesModel:
         return output
 
     def predict(self, company_data: ModelCompanyData) -> CompanyPredict:
+        print(company_data)
         tmp_dict = company_data.dict()
+        print(tmp_dict)
         return CompanyPredict(**self.predict_dict(tmp_dict))
