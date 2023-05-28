@@ -75,6 +75,7 @@ class InsightsModel(AnalyzingModel):
                     'service_expenses'].mean())
             current_service_expenses = company_predict['service_expenses']
             if mean_service_expenses < current_service_expenses:
+                print("DEBUG", mean_service_expenses, current_service_expenses)
                 usual_expenses_insight += f'а на услуги на {int((current_service_expenses - mean_service_expenses) / (current_service_expenses * 0.01))}% меньше'
             elif mean_service_expenses >= current_service_expenses:
                 usual_expenses_insight += f'а на услуги на {int((mean_service_expenses - current_service_expenses) / (current_service_expenses * 0.01))}% больше'
