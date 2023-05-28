@@ -62,6 +62,7 @@ class ExpensesModel:
         return employees * 500 + np.sqrt(operations * mul_coeff[tax_system]) + add_coeff[tax_system]
 
     def _check_dictionary(self, data):
+        print(data)
         def _check_additive_value(value):
             if value is None:
                 return 0
